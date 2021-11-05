@@ -16,29 +16,12 @@ const Loader = (Component) => (props) => (
 // Pages
 
 
+// Login
+const Login = Loader(lazy(() => import('src/content/pages/Components/Login')));
+
 // Dashboards
 
 const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
-
-// Applications
-
-const Messenger = Loader(lazy(() => import('src/content/applications/Messenger')));
-const Transactions = Loader(lazy(() => import('src/content/applications/Transactions')));
-const UserProfile = Loader(lazy(() => import('src/content/applications/Users/profile')));
-const UserSettings = Loader(lazy(() => import('src/content/applications/Users/settings')));
-
-// Components
-
-const Buttons = Loader(lazy(() => import('src/content/pages/Components/Buttons')));
-const Modals = Loader(lazy(() => import('src/content/pages/Components/Modals')));
-const Accordions = Loader(lazy(() => import('src/content/pages/Components/Accordions')));
-const Tabs = Loader(lazy(() => import('src/content/pages/Components/Tabs')));
-const Badges = Loader(lazy(() => import('src/content/pages/Components/Badges')));
-const Tooltips = Loader(lazy(() => import('src/content/pages/Components/Tooltips')));
-const Avatars = Loader(lazy(() => import('src/content/pages/Components/Avatars')));
-const Cards = Loader(lazy(() => import('src/content/pages/Components/Cards')));
-const Forms = Loader(lazy(() => import('src/content/pages/Components/Forms')));
-const Login = Loader(lazy(() => import('src/content/pages/Components/Login')));
 
 // Status
 
@@ -124,10 +107,6 @@ const routes: PartialRouteObject[] = [
       {
         path: 'crypto',
         element: <Crypto />
-      },
-      {
-        path: 'messenger',
-        element: <Messenger />
       }
     ]
   },
@@ -147,10 +126,6 @@ const routes: PartialRouteObject[] = [
         )
       },
       {
-        path: 'transactions',
-        element: <Transactions />
-      },
-      {
         path: 'masterdata',
         children: [
           {
@@ -165,7 +140,57 @@ const routes: PartialRouteObject[] = [
           {
             path: 'category',
             element: <Category />
-          }
+          },
+          {
+            path: 'brand',
+            element: <Category />
+          },
+          {
+            path: 'city',
+            element: <Category />
+          },
+          {
+            path: 'product',
+            children: [
+              {
+                path: '/',
+                element: (
+                  <Navigate
+                    to="color"
+                    replace
+                  />
+                )
+              },
+              {
+                path: '/color',
+                element: <Category />
+              },
+              {
+                path: '/tenor',
+                element: <Category />
+              },
+              {
+                path: '/location',
+                element: <Category />
+              },
+            ]
+          },
+          {
+            path: 'article',
+            element: <Category />
+          },
+          {
+            path: 'discussion',
+            element: <Category />
+          },
+          {
+            path: 'review',
+            element: <Category />
+          },
+          {
+            path: 'feedback',
+            element: <Category />
+          },
         ]
       },
       {
@@ -181,68 +206,15 @@ const routes: PartialRouteObject[] = [
             )
           },
           {
-            path: 'details',
-            element: <UserProfile />
+            path: '/details',
+            element: <Category />
           },
           {
-            path: 'settings',
-            element: <UserSettings />
+            path: '/settings',
+            element: <Category />
           },
         ]
       }
-    ]
-  },
-  {
-    path: 'components',
-    element: (
-      <SidebarLayout />
-    ),
-    children: [
-      {
-        path: '/',
-        element: (
-          <Navigate
-            to="/components/buttons"
-            replace
-          />
-        )
-      },
-      {
-        path: 'buttons',
-        element: <Buttons />
-      },
-      {
-        path: 'modals',
-        element: <Modals />
-      },
-      {
-        path: 'accordions',
-        element: <Accordions />
-      },
-      {
-        path: 'tabs',
-        element: <Tabs />
-      },
-      {
-        path: 'badges',
-        element: <Badges />
-      },
-      {
-        path: 'tooltips',
-        element: <Tooltips />
-      },
-      {
-        path: 'avatars',
-        element: <Avatars />
-      },
-      {
-        path: 'cards',
-        element: <Cards />
-      },
-      {
-        path: 'forms',
-        element: <Forms />
-      },
     ]
   }
 ];

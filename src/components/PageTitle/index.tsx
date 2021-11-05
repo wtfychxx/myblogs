@@ -25,18 +25,6 @@ const PageTitle: FC<PageTitleProps> = ({
                     {subHeading}
                 </Typography>
             </Grid>
-            <Grid item>
-                <Button
-                    href={docs}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    sx={{ mt: { xs: 2, md: 0 } }}
-                    variant="contained"
-                    startIcon={<AddTwoToneIcon fontSize="small" />}
-                >
-                    {heading} Documentation
-                </Button>
-            </Grid>
         </Grid>
     );
 };

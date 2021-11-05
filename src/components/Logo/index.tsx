@@ -102,7 +102,7 @@ function Logo() {
 
 
   return (
-    <LogoWrapper to="/overview">
+    <LogoWrapper to="/dashboards">
       <LogoSignWrapper>
         <LogoSign>
           <LogoSignInner />
