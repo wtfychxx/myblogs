@@ -16,6 +16,9 @@ import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
 
 import { IconButtonProps } from '@material-ui/core/IconButton';
 
@@ -24,29 +27,10 @@ interface ExpandMoreProps extends IconButtonProps{
     isOpen: boolean;
     selectedValue: number;
 }
-
-function SimpleDialog(props){
-  const { onClose, selectedValue, open } = props
-
-  const handleClose = () => {
-    onClose(selectedValue)
-  }
-
-  const handleListItemsClick = (value) => {
-    onClose(value)
-  }
-
-  return(
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle> Category Form </DialogTitle>
-    </Dialog>
-  )
-}
    
 function Category() {
 
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedValue, setSelectedValue] = useState(0)
 
   const tableData = [
     {
@@ -106,7 +90,7 @@ function Category() {
                     <TableBody>
                       {tableData.map((row) => (
                         <TableRow key={row.id}>
-                          <TableCell><Link href="#" underline="none" onClick={() => setSelectedValue(row.id)}>{row.name}</Link></TableCell>
+                          <TableCell><Link href="#" underline="none">{row.name}</Link></TableCell>
                           <TableCell>{row.description}</TableCell>
                           <TableCell><Button variant="text"> Delete </Button></TableCell>
                         </TableRow>
