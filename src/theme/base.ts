@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Theme } from '@material-ui/core';
-import { PureLightTheme } from './schemes/PureLightTheme';
+import { OtoSalesTheme } from './schemes/OtoSalesTheme';
 
 export function themeCreator(theme: string): Theme {
   return themeMap[theme];
@@ -235,5 +235,5 @@ declare module '@material-ui/core/styles' {
 }
 
 const themeMap: { [key: string]: Theme } = {
-  PureLightTheme
+  OtoSalesTheme
 };

@@ -1,13 +1,11 @@
 import { Helmet } from 'react-helmet-async';
 
-import { Container, Grid, Card, CardHeader, CardContent } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import { makeStyles } from '@material-ui/styles'
+import { Container, Grid, Card, CardHeader, CardContent } from '@mui/material';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
+import { makeStyles } from '@mui/styles'
 import { useForm, SubmitHandler } from 'react-hook-form'
-
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const useStyles = makeStyles({
     containerStyle: {
@@ -24,7 +22,7 @@ type Inputs = {
 function Login() {
     const classes = useStyles()
 
-    const { register, handleSubmit, control, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = data => {
         
     }

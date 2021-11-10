@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { themeCreator } from './base';
 import { StylesProvider } from '@material-ui/styles';
 
@@ -8,7 +8,7 @@ export const ThemeContext = React.createContext(
 );
 
 const ThemeProviderWrapper: React.FC = (props) => {
-  const curThemeName = localStorage.getItem('appTheme') || 'PureLightTheme';
+  const curThemeName = localStorage.getItem('appTheme') || 'OtoSalesTheme';
   const [themeName, _setThemeName] = useState(curThemeName);
   const theme = themeCreator(themeName);
   const setThemeName = (themeName: string): void => {

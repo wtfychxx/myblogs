@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import PropTypes from 'prop-types';
-import AddTwoToneIcon from '@material-ui/icons/AddTwoTone';
-import { Typography, Button, Grid } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 
 interface PageTitleProps {
     heading?: string;

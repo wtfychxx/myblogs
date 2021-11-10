@@ -3,24 +3,31 @@ import { useState } from 'react';
 
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import Swal from 'sweetalert2';
-import { Container, Grid, Card, CardHeader, CardContent, Divider } from '@mui/material';
+import { Container, Grid, Card, CardHeader, CardContent, Divider } from '@material-ui/core';
 import Footer from 'src/components/Footer';
-import Button from '@mui/material/Button';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import TextField from '@mui/material/TextField';
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Link from '@material-ui/core/Link';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import TextField from '@material-ui/core/TextField';
 
+import { IconButtonProps } from '@material-ui/core/IconButton';
+
+
+interface ExpandMoreProps extends IconButtonProps{
+    isOpen: boolean;
+    selectedValue: number;
+}
+   
 function Category() {
 
   const [open, setOpen] = useState(false)
@@ -48,32 +55,12 @@ function Category() {
     }
   ]
 
-  const handleClickOpen = (id: number = 0) => {
+  const handleClickOpen = (id: number) => {
     setOpen(true);
   }
 
   const handleClose = () => {
     setOpen(false);
-  }
-
-  const handleDelete = (id: number) => {
-      return Swal.fire({
-          icon: 'question',
-          title: 'Are you sure to delete?',
-          text: "You won't be able to revert this!",
-          showCancelButton: true,
-          confirmButtonText: 'Do it!'
-      }).then((result) => {
-          if(result.value){
-
-          }
-      });
-  }
-
-  const AddButton = () => {
-    return(
-      <Button variant="contained" onClick={() => handleClickOpen()}> Add </Button>
-    )
   }
 
   return (
@@ -96,7 +83,7 @@ function Category() {
         >
           <Grid item xs={12}>
             <Card>
-              <CardHeader title="Category List" action={<AddButton />} />
+              <CardHeader title="Category List" />
               <Divider />
               <CardContent>
                 <TableContainer component={Paper}>
@@ -113,7 +100,7 @@ function Category() {
                         <TableRow key={row.id}>
                           <TableCell><Link href="#" underline="none" onClick={() => handleClickOpen(row.id)}>{row.name}</Link></TableCell>
                           <TableCell>{row.description}</TableCell>
-                          <TableCell><Button variant="text" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
+                          <TableCell><Button variant="text"> Delete </Button></TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -123,18 +110,9 @@ function Category() {
             </Card>
           </Grid>
         </Grid>
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-          <DialogTitle> Category Form </DialogTitle>
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>Subscribe</DialogTitle>
           <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Email Address"
-              type="email"
-              fullWidth
-              variant="standard"
-            />
             <TextField
               autoFocus
               margin="dense"
@@ -147,7 +125,7 @@ function Category() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button variant="contained">Save</Button>
+            <Button onClick={handleClose}>Subscribe</Button>
           </DialogActions>
         </Dialog>
       </Container>
