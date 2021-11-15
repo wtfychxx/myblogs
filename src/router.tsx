@@ -33,6 +33,7 @@ const StatusMaintenance = Loader(lazy(() => import('src/content/pages/Status/Mai
 // Master Data
 
 const Category = Loader(lazy(() => import('src/content/pages/Components/MasterData/Category')));
+const Brand = Loader(lazy(() => import('src/content/pages/Components/MasterData/Brand')));
 
 
 const routes: PartialRouteObject[] = [
@@ -143,7 +144,7 @@ const routes: PartialRouteObject[] = [
           },
           {
             path: 'brand',
-            element: <Category />
+            element: <Brand />
           },
           {
             path: 'city',

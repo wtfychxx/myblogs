@@ -20,10 +20,13 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import TextField from '@mui/material/TextField';
+import { useTheme } from '@material-ui/core';
 
-function Category() {
+function Brand() {
 
   const [open, setOpen] = useState(false)
+  const theme = useTheme()
+  console.log(theme);
 
   const tableData = [
     {
@@ -48,10 +51,6 @@ function Category() {
     }
   ]
 
-  useEffect(() => {
-    
-  },[])
-
   const handleClickOpen = (id: number = 0) => {
     setOpen(true);
   }
@@ -66,7 +65,8 @@ function Category() {
           title: 'Are you sure to delete?',
           text: "You won't be able to revert this!",
           showCancelButton: true,
-          confirmButtonText: 'Do it!'
+          confirmButtonText: 'Do it!',
+          confirmButtonColor: theme.colors.error.main
       }).then((result) => {
           if(result.value){
 
@@ -83,11 +83,11 @@ function Category() {
   return (
     <>
       <Helmet>
-        <title>Category</title>
+        <title>Brand</title>
       </Helmet>
       <PageTitleWrapper>
         <PageTitle
-          heading="Category"
+          heading="Brand"
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -100,11 +100,11 @@ function Category() {
         >
           <Grid item xs={12}>
             <Card>
-              <CardHeader title="Category List" action={<AddButton />} />
+              <CardHeader title="Brand List" action={<AddButton />} />
               <Divider />
               <CardContent>
                 <TableContainer component={Paper}>
-                  <Table aria-label="Category table">
+                  <Table aria-label="Brand table">
                     <TableHead>
                       <TableRow>
                         <TableCell> Name </TableCell>
@@ -160,4 +160,4 @@ function Category() {
   );
 }
 
-export default Category;
+export default Brand;
