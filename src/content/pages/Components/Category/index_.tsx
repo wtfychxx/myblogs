@@ -1,10 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 
-import PageTitle from 'src/components/PageTitle';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Container, Grid, Card, CardHeader, CardContent, Divider } from '@material-ui/core';
-import Footer from 'src/components/Footer';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -28,7 +25,7 @@ interface ExpandMoreProps extends IconButtonProps{
     selectedValue: number;
 }
    
-function Category() {
+function Category({ PageTitle, PageTitleWrapper, Footer }) {
 
   const [open, setOpen] = useState(false)
 

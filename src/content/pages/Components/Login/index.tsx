@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { makeStyles } from '@mui/styles'
 import { useForm, SubmitHandler } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 const useStyles = makeStyles({
     containerStyle: {
@@ -21,10 +22,11 @@ type Inputs = {
 
 function Login() {
     const classes = useStyles()
+    const navigate = useNavigate()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = data => {
-        
+        navigate('/dashboards')
     }
 
     return (

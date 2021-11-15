@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
@@ -47,6 +47,10 @@ function Category() {
       description: 'This is category 4'
     }
   ]
+
+  useEffect(() => {
+    
+  },[])
 
   const handleClickOpen = (id: number = 0) => {
     setOpen(true);
@@ -113,7 +117,7 @@ function Category() {
                         <TableRow key={row.id}>
                           <TableCell><Link href="#" underline="none" onClick={() => handleClickOpen(row.id)}>{row.name}</Link></TableCell>
                           <TableCell>{row.description}</TableCell>
-                          <TableCell><Button variant="text" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
+                          <TableCell><Button variant="text" color="error" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

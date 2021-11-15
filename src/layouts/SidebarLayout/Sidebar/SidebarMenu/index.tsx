@@ -191,7 +191,6 @@ const reduceChildRoutes = ({
 function SidebarMenu() {
   const location = useLocation();
 
-
   return (
     <>
       {menuItems.map((section) => (

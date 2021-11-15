@@ -32,7 +32,7 @@ const StatusMaintenance = Loader(lazy(() => import('src/content/pages/Status/Mai
 
 // Master Data
 
-const Category = Loader(lazy(() => import('src/content/pages/Components/Category')));
+const Category = Loader(lazy(() => import('src/content/pages/Components/MasterData/Category')));
 
 
 const routes: PartialRouteObject[] = [
