@@ -33,15 +33,6 @@ function Category() {
   const [open, setOpen] = useState(false)
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
 
-  const getData = async () => {
-    const data = await list('/', {module_table__id: 1});
-
-    return data;
-  }
-
-  const tableData2 = getData();
-  console.log(tableData2);
-
   const tableData = [
     {
       id: 1,
@@ -97,6 +88,33 @@ function Category() {
     )
   }
 
+  const TableData = () => {
+    // const data = await list('/', {module_table__id: 1});
+  
+    return(
+      <TableRow>
+        <TableCell>Data</TableCell>
+        <TableCell>Delete</TableCell>
+      </TableRow>
+    )
+    // if(data !== undefined){
+    //   return(
+    //     <>
+    //       {data.data.result.map((entry, i) => {
+    //         return(
+    //           <TableRow key={i}>
+    //             <TableCell><Link href="#" underline="none" onClick={() => handleClickOpen(entry.id)}>{entry.name}</Link></TableCell>
+    //             <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
+    //           </TableRow>
+    //         )
+    //       })}
+    //     </>
+    //   )
+    // }else{
+    //   return null
+    // }
+  }
+
   return (
     <>
       <Helmet>
@@ -129,12 +147,7 @@ function Category() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {tableData.map((row) => (
-                        <TableRow key={row.id}>
-                          <TableCell><Link href="#" underline="none" onClick={() => handleClickOpen(row.id)}>{row.name}</Link></TableCell>
-                          <TableCell><Button variant="text" color="error" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
-                        </TableRow>
-                      ))}
+                      <TableData />
                     </TableBody>
                   </Table>
                 </TableContainer>
