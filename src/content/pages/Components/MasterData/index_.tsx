@@ -9,7 +9,7 @@ function MasterData({ type }) {
     const renderMaster = useMemo((): JSX.Element => {
         console.log('masuk')
         if(type === 'Category'){
-            return <Category />
+            return <div> Ada </div>;
         }else{
             return <div>not found</div>
         }

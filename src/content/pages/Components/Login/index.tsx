@@ -1,10 +1,10 @@
 import { Helmet } from 'react-helmet-async';
 
-import { Container, Grid, Card, CardHeader, CardContent } from '@mui/material';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import { makeStyles } from '@mui/styles'
+import { Container, Grid, Card, CardHeader, CardContent } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import { makeStyles } from '@material-ui/styles';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
@@ -32,7 +32,7 @@ function Login() {
     return (
     <>
         <Helmet>
-        <title>Login - Components</title>
+        <title>Login - Otosales</title>
         </Helmet>
         <Container maxWidth="lg">
             <Grid
@@ -44,7 +44,7 @@ function Login() {
                 className={classes.containerStyle}>
                 <Grid item xs={12} md={9} lg={6}>
                     <Card>
-                        <CardHeader title="Login Form" />
+                        <CardHeader title="Otosales Login form" />
                         <CardContent>
                             <Box
                                 component="form"
@@ -73,6 +73,7 @@ function Login() {
                                         helperText={(errors.password) ? errors.password.message : ''}
                                     />
                                     <Button type="submit" variant="contained" sx={{ mt: 2 }}> Login </Button>
+                                    <Button type="button" variant="text" sx={{ mt: 2, float: 'right' }} onClick={() => navigate('/register')}> Daftar </Button>
                             </Box>
                         </CardContent>
                     </Card>
