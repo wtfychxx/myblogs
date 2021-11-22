@@ -29,32 +29,27 @@ type Inputs = {
   description: string
 }
 
+export interface SideProps{
+  tableData: string[]
+}
+
 function Category() {
   const [open, setOpen] = useState(false)
+  const [tableData, setTableData] = useState([])
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
 
-  const tableData = [
-    {
-      id: 1,
-      name: 'Category 1',
-      description: 'This is category 1'
-    },
-    {
-      id: 2,
-      name: 'Category 2',
-      description: 'This is category 2'
-    },
-    {
-      id: 3,
-      name: 'Category 3',
-      description: 'This is category 3'
-    },
-    {
-      id: 4,
-      name: 'Category 4',
-      description: 'This is category 4'
-    }
-  ]
+  const getData = async () => {
+    const data = await list('category', {module_table__id: 1})
+    console.log(data)
+
+    // if(data.result){
+    //   setTableData(data.result);
+    // }
+  }
+
+  useEffect(() => {
+    getData()
+  },[])
 
   const handleClickOpen = (id: number = 0) => {
     setOpen(true);
@@ -86,33 +81,6 @@ function Category() {
     return(
       <Button variant="contained" onClick={() => handleClickOpen()}> Add </Button>
     )
-  }
-
-  const TableData = () => {
-    // const data = await list('/', {module_table__id: 1});
-  
-    return(
-      <TableRow>
-        <TableCell>Data</TableCell>
-        <TableCell>Delete</TableCell>
-      </TableRow>
-    )
-    // if(data !== undefined){
-    //   return(
-    //     <>
-    //       {data.data.result.map((entry, i) => {
-    //         return(
-    //           <TableRow key={i}>
-    //             <TableCell><Link href="#" underline="none" onClick={() => handleClickOpen(entry.id)}>{entry.name}</Link></TableCell>
-    //             <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
-    //           </TableRow>
-    //         )
-    //       })}
-    //     </>
-    //   )
-    // }else{
-    //   return null
-    // }
   }
 
   return (
@@ -147,7 +115,17 @@ function Category() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      <TableData />
+                    {
+                      (tableData.length) ? tableData.map((entry, i) => {
+                        return(
+                          <TableRow key={i}>
+                            <TableCell><Button variant="text" onClick={() => handleClickOpen(entry.id)}>{entry.name}</Button></TableCell>
+                            <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
+                          </TableRow>
+                        )
+                      })
+                      : null
+                    }
                     </TableBody>
                   </Table>
                 </TableContainer>

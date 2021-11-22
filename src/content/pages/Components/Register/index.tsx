@@ -18,7 +18,8 @@ function Register(){
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = async data => {
         const result = await registerData('register', data)
-        console.log(result)
+
+        console.log(result);
     }
 
     return(

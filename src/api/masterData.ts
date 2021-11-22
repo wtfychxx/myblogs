@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const apiurl = 'https://api.dynasis.web.id/api';
+const apiurl = 'http://103.8.79.68:8080'
 
 export async function insert(endpoint: string = '', rawData: object = {}){
     const res = axios.post(`${apiurl}/${endpoint}`, rawData)
@@ -9,7 +9,7 @@ export async function insert(endpoint: string = '', rawData: object = {}){
 }
 
 export async function list(type: string = '', param: object = {}){
-    const res = axios.post(`${apiurl}/MasterData`, JSON.stringify(param));
+    const res = await axios.get(`${apiurl}/${type}`).catch(errors => console.error(errors))
 
     return res;
 }
