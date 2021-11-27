@@ -36,6 +36,11 @@ const StatusMaintenance = Loader(lazy(() => import('src/content/pages/Status/Mai
 const Category = Loader(lazy(() => import('src/content/pages/Components/MasterData/Category')));
 const Brand = Loader(lazy(() => import('src/content/pages/Components/MasterData/Brand')));
 
+// Master Data Area
+
+const Province = Loader(lazy(() => import('src/content/pages/Components/MasterData/Area/Province')));
+const City = Loader(lazy(() => import('src/content/pages/Components/MasterData/Area/City')));
+
 
 const routes: PartialRouteObject[] = [
   {
@@ -152,8 +157,26 @@ const routes: PartialRouteObject[] = [
             element: <Brand />
           },
           {
-            path: 'city',
-            element: <Category />
+            path: 'area',
+            children: [
+              {
+                path: '/',
+                element: (
+                  <Navigate
+                    to="province"
+                    replace
+                  />
+                )
+              },
+              {
+                path: '/province',
+                element: <Province />
+              },
+              {
+                path: '/city',
+                element: <City />
+              }
+            ]
           },
           {
             path: 'product',

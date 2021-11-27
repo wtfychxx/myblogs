@@ -35,8 +35,18 @@ const menuItems: MenuItems[] = [
               link: '/management/masterdata/brand'
             },
             {
-              name: 'Kota',
-              link: '/management/masterdata/city'
+              name: 'Area',
+              link: '/management/masterdata/area',
+              items: [
+                {
+                  name: 'Provinsi',
+                  link: '/management/masterdata/area/province'
+                },
+                {
+                  name: 'Kota',
+                  link: '/management/masterdata/area/city'
+                }
+              ]
             },
             {
               name: 'Produk',
