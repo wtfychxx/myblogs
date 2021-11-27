@@ -1,12 +1,10 @@
-import { useContext } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import { SidebarContext } from 'src/contexts/SidebarContext';
-import Logo from 'src/components/Logo';
-
-import { Box, Drawer, Hidden } from '@material-ui/core';
-
-import { experimentalStyled } from '@material-ui/core/styles';
-import SidebarMenu from './SidebarMenu';
+import { useContext } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import { SidebarContext } from 'src/contexts/SidebarContext'
+import { Box, Drawer, Hidden } from '@material-ui/core'
+import { experimentalStyled } from '@material-ui/core/styles'
+import SidebarMenu from './SidebarMenu'
+import SidebarLogo from 'src/components/OtosalesLogo/SidebarLogo'
 
 const SidebarWrapper = experimentalStyled(Box)(
   ({ theme }) => `
@@ -30,6 +28,7 @@ const TopSection = experimentalStyled(Box)(
         display: flex;
         height: 88px;
         align-items: center;
+        justify-content: center;
         margin: 0 ${theme.spacing(2)} ${theme.spacing(2)};
         border-bottom: ${theme.sidebar.dividerBg} solid 1px;
 `
@@ -45,7 +44,7 @@ function Sidebar() {
         <SidebarWrapper>
           <Scrollbars autoHide>
             <TopSection>
-              <Logo />
+              <SidebarLogo />
             </TopSection>
             <SidebarMenu />
           </Scrollbars>
@@ -62,7 +61,7 @@ function Sidebar() {
           <SidebarWrapper>
             <Scrollbars autoHide>
               <TopSection>
-                <Logo />
+                <SidebarLogo />
               </TopSection>
               <SidebarMenu />
             </Scrollbars>

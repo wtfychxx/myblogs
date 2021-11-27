@@ -8,7 +8,7 @@ export async function insert(endpoint: string = '', rawData: object = {}){
     return res;
 }
 
-export async function list(type: string = '', param: object = {}){
+export async function list(type: string = ''){
     const res = await axios.get(`${apiurl}/${type}`).catch(errors => console.error(errors))
 
     return res;

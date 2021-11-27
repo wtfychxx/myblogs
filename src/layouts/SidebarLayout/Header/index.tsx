@@ -6,10 +6,9 @@ import MenuTwoToneIcon from '@material-ui/icons/MenuTwoTone';
 import { SidebarContext } from 'src/contexts/SidebarContext';
 import CloseTwoToneIcon from '@material-ui/icons/CloseTwoTone';
 
-import HeaderMenu from './Menu';
 import HeaderButtons from './Buttons';
 import HeaderUserbox from './Userbox';
-import Logo from 'src/components/Logo';
+import HeaderLogo from 'src/components/OtosalesLogo/HeaderLogo';
 
 const HeaderWrapper = experimentalStyled(Box)(
   ({ theme }) => `
@@ -37,7 +36,7 @@ function Header() {
     <HeaderWrapper display="flex" alignItems="center">
       <Box display="flex" alignItems="center">
         <Hidden lgUp>
-          <Logo />
+          <HeaderLogo />
         </Hidden>
       </Box>
       <Box display="flex" alignItems="center">

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import PageTitle from 'src/components/PageTitle';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import Swal from 'sweetalert2';
-import { Container, Grid, Card, CardHeader, CardContent, Divider } from '@material-ui/core';
+import { Container, Grid, Card, CardHeader, CardContent, Divider, FormControl } from '@material-ui/core';
 import Footer from 'src/components/Footer';
 import Button from '@material-ui/core/Button';
 import Table from '@material-ui/core/Table';
@@ -21,8 +21,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import { useTheme } from '@material-ui/core';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { imageValidation } from 'src/lib/imageValidation';
+import { withStyles } from '@material-ui/styles';
 
 type Inputs = {
   id: number,
@@ -94,7 +99,7 @@ function Brand() {
   }
 
   const fileValidation = (e:any) => {
-    console.log(e);
+    const isValid = imageValidation(e.target.files[0])
   }
 
   return (
@@ -144,11 +149,11 @@ function Brand() {
             </Card>
           </Grid>
         </Grid>
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" style={{ zIndex: 7 }}>
           <DialogTitle> Brand Form </DialogTitle>
           <Box
             component="form"
-            sx={{ '& .MuiTextField-root': { mt: 2, width: 1 } }}
+            sx={{ '& .MuiTextField-root': { mt: 2, width: 1, zIndex: '7 !important' } }}
             onSubmit={handleSubmit(onSubmit)}>
             <DialogContent>
               <input
@@ -164,12 +169,23 @@ function Brand() {
                 fullWidth
                 {...register("name", { required: { value: true, message: "Name is required!" } })}
               />
+
+              <FormControl fullWidth sx={{ mt: 1 }}>
+                <InputLabel id="label-category"> Category </InputLabel>
+                <Select
+                  label="Category"
+                  labelId="label-category"
+                  {...register("categoryId", { required: { value: true, message: "Category is required!" } })}
+                  >
+                  <MenuItem value={''}>- Choose -</MenuItem>
+                </Select>
+              </FormControl>
               
               <Button
                 variant="contained"
                 component="label"
                 sx={{ mt: 2 }}>
-                  Upload File
+                  Upload Brand Logo
                   <input
                     type="file"
                     hidden

@@ -39,8 +39,7 @@ function Category() {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
-    const data = await list('category', {module_table__id: 1})
-    console.log(data)
+    const data = await list('category')
 
     // if(data.result){
     //   setTableData(data.result);

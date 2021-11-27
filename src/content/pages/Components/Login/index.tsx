@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/styles';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { login } from 'src/api/login'
 
 const useStyles = makeStyles({
     containerStyle: {
@@ -25,8 +26,13 @@ function Login() {
     const navigate = useNavigate()
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
-    const onSubmit: SubmitHandler<Inputs> = data => {
-        navigate('/dashboards')
+    const onSubmit: SubmitHandler<Inputs> = async data => {
+        // const result = await login(data.email, data.password)
+        const result = true
+
+        if(result){
+            navigate('/dashboards')
+        }
     }
 
     return (
