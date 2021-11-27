@@ -1,33 +1,33 @@
-import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { Helmet } from 'react-helmet-async'
+import { useState } from 'react'
 
-import PageTitle from 'src/components/PageTitle';
-import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import Swal from 'sweetalert2';
-import { Container, Grid, Card, CardHeader, CardContent, Divider, FormControl } from '@material-ui/core';
-import Footer from 'src/components/Footer';
-import Button from '@material-ui/core/Button';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import TextField from '@material-ui/core/TextField';
-import Box from '@material-ui/core/Box';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import { useTheme } from '@material-ui/core';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { imageValidation } from 'src/lib/imageValidation';
-import { withStyles } from '@material-ui/styles';
+import PageTitle from 'src/components/PageTitle'
+import PageTitleWrapper from 'src/components/PageTitleWrapper'
+import Swal from 'sweetalert2'
+import { Container, Grid, Card, CardHeader, CardContent, Divider, FormControl } from '@material-ui/core'
+import Footer from 'src/components/Footer'
+import Button from '@material-ui/core/Button'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import Paper from '@material-ui/core/Paper'
+import Link from '@material-ui/core/Link'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogActions from '@material-ui/core/DialogActions'
+import TextField from '@material-ui/core/TextField'
+import Box from '@material-ui/core/Box'
+import Select from '@material-ui/core/Select'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import { useTheme } from '@material-ui/core'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { imageValidation } from 'src/lib/imageValidation'
+import { uploadImage, insert } from 'src/api/masterData'
 
 type Inputs = {
   id: number,
@@ -42,8 +42,13 @@ function Brand() {
   const theme = useTheme()
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
 
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    console.log(data)
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const result = await insert('', data);
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Successfully insert the data!'
+    })
   }
 
   const tableData = [
@@ -98,8 +103,23 @@ function Brand() {
     )
   }
 
-  const fileValidation = (e:any) => {
+  const fileValidation = async (e:any) => {
     const isValid = imageValidation(e.target.files[0])
+    const file = e.target.files[0]
+
+    if(isValid){
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const upload = await uploadImage(formData)
+
+      if(upload.status === 'success'){
+        Swal.fire({
+          icon: 'success',
+          title: upload.message
+        })
+      }
+    }
   }
 
   return (

@@ -13,3 +13,10 @@ export async function list(type: string = ''){
 
     return res;
 }
+
+export async function uploadImage(files: any){
+    return {
+        message: 'Your files has success to upload!',
+        status: 'success'
+    }
+}

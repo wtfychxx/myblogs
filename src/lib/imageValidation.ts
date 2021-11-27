@@ -12,6 +12,8 @@ export const imageValidation = (files: filesProps) => {
     const filesize = files.size
     const filetype = files.type
 
+    console.log(filesize)
+
     if(filetype !== 'image/png'){
         Swal.fire({
             icon: 'warning',
@@ -19,4 +21,14 @@ export const imageValidation = (files: filesProps) => {
         })
         return
     }
+
+    if(filesize > 2048000){
+        Swal.fire({
+            icon: 'warning',
+            title: 'Files must be belo 2Mb'
+        })
+        return
+    }
+
+    return true
 }
