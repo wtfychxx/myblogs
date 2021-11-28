@@ -21,48 +21,39 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { detail, list, insert, deleteData } from 'src/api/masterData';
+import { list } from 'src/api/masterData';
 
 type Inputs = {
   id: number,
   name: string,
-  description: string
+  shortName: string,
+  accountNumber: string,
+  bankCode: string
 }
 
 export interface SideProps{
   tableData: string[]
 }
 
-function Category() {
+function Bank() {
   const [open, setOpen] = useState(false)
   const [tableData, setTableData] = useState([])
-  const [message, setMessage] = useState('')
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
-    const result = await list('category')
+    const data = await list('Bank')
 
-    setMessage(result.message)
-    if(result.data.length){
-      setTableData(result.data)
-    }
+    // if(data.result){
+    //   setTableData(data.result);
+    // }
   }
 
   useEffect(() => {
     getData()
   },[])
 
-  const handleClickOpen = async (id: number = 0) => {
-    setOpen(true)
-
-    setValue("id", id)
-    if(id > 0){
-      const result = await detail('category', id)
-      
-      if(result.code === 200){
-        setValue("name", result.data.name)
-      }
-    }
+  const handleClickOpen = (id: number = 0) => {
+    setOpen(true);
   }
 
   const handleClose = () => {
@@ -76,37 +67,15 @@ function Category() {
           text: "You won't be able to revert this!",
           showCancelButton: true,
           confirmButtonText: 'Do it!'
-      }).then(async (result) => {
+      }).then((result) => {
           if(result.value){
-            const result = await deleteData('category', id)
 
-            if(result.code === 200){
-              Swal.fire({
-                icon: 'success',
-                title: result.message
-              }).then(() => {
-                getData()
-              })
-            }
           }
       });
   }
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const endpoint = (data.id === 0) ? `category` : `category/${data.id}`
-    const result = await insert(endpoint, {name: data.name})
-
-    if(result.code === 200){
-      Swal.fire({
-        icon: 'success',
-        title: result.message
-      })
-    }else{
-      Swal.fire({
-        icon: 'warning',
-        title: result.message
-      })
-    }
+  const onSubmit: SubmitHandler<Inputs> = data => {
+    console.log(data)
   }
 
   const AddButton = () => {
@@ -118,11 +87,11 @@ function Category() {
   return (
     <>
       <Helmet>
-        <title>Category</title>
+        <title>Bank</title>
       </Helmet>
       <PageTitleWrapper>
         <PageTitle
-          heading="Category"
+          heading="Bank"
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -135,14 +104,17 @@ function Category() {
         >
           <Grid item xs={12}>
             <Card>
-              <CardHeader title="Category List" action={<AddButton />} />
+              <CardHeader title="Bank List" action={<AddButton />} />
               <Divider />
               <CardContent>
                 <TableContainer component={Paper}>
-                  <Table aria-label="Category table">
+                  <Table aria-label="Bank table">
                     <TableHead>
                       <TableRow>
                         <TableCell> Name </TableCell>
+                        <TableCell> Short Name </TableCell>
+                        <TableCell> Account Number </TableCell>
+                        <TableCell> Bank Code </TableCell>
                         <TableCell> </TableCell>
                       </TableRow>
                     </TableHead>
@@ -152,13 +124,14 @@ function Category() {
                         return(
                           <TableRow key={i}>
                             <TableCell><Button variant="text" onClick={() => handleClickOpen(entry.id)}>{entry.name}</Button></TableCell>
+                            <TableCell>{entry.shortName}</TableCell>
+                            <TableCell>{entry.accountNumber}</TableCell>
+                            <TableCell>{entry.bankCode}</TableCell>
                             <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
                           </TableRow>
                         )
                       })
-                      : <TableRow>
-                        <TableCell colSpan={2}>{message}</TableCell>
-                      </TableRow>
+                      : null
                     }
                     </TableBody>
                   </Table>
@@ -167,8 +140,8 @@ function Category() {
             </Card>
           </Grid>
         </Grid>
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" style={{ zIndex: 7 }}>
-          <DialogTitle> Category Form </DialogTitle>
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+          <DialogTitle> Bank Form </DialogTitle>
           <Box
             component="form"
             sx={{ '& .MuiTextField-root': { mt: 2, width: 1 } }}
@@ -189,6 +162,37 @@ function Category() {
                   {...register("name", {required: { value: true, message: "Name is required!" }})}
                   helperText={(errors.name) ? errors.name.message : ''}
                 />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label="Short Name"
+                    type="text"
+                    fullWidth
+                    {...register("shortName", {
+                                    required: { value: true, message: "Short name is required" },
+                                    maxLength: { value: 3, message: "Maximum 3 Length" },
+                                    pattern: { value: /^[0-9]+$/i, message: "Numbers Only" }
+                                })}
+                    helperText={(errors.shortName) ? errors.shortName.message : ''}
+                    />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label="Account Number"
+                    type="text"
+                    fullWidth
+                    {...register("accountNumber", { required: { value: true, message: "Account number is required" } })}
+                    helperText={(errors.accountNumber) ? errors.accountNumber.message : ''}
+                    />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label="Bank Code"
+                    type="text"
+                    fullWidth
+                    {...register("bankCode", { required: { value: true, message: "Bank code is required" } })}
+                    helperText={(errors.bankCode) ? errors.bankCode.message : ''}
+                    />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
@@ -202,4 +206,4 @@ function Category() {
   );
 }
 
-export default Category;
+export default Bank;

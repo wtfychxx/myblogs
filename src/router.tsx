@@ -35,6 +35,7 @@ const StatusMaintenance = Loader(lazy(() => import('src/content/pages/Status/Mai
 
 const Category = Loader(lazy(() => import('src/content/pages/Components/MasterData/Category')));
 const Brand = Loader(lazy(() => import('src/content/pages/Components/MasterData/Brand')));
+const Bank = Loader(lazy(() => import('src/content/pages/Components/MasterData/Bank')));
 
 // Master Data Area
 
@@ -155,6 +156,10 @@ const routes: PartialRouteObject[] = [
           {
             path: 'brand',
             element: <Brand />
+          },
+          {
+            path: 'bank',
+            element: <Bank />
           },
           {
             path: 'area',

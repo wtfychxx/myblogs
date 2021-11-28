@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/styles';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { login } from 'src/api/login'
+import Swal from 'sweetalert2';
 
 const useStyles = makeStyles({
     containerStyle: {
@@ -17,8 +18,7 @@ const useStyles = makeStyles({
 })
 
 type Inputs = {
-    email: string,
-    password: string
+    phone: string
 }
 
 function Login() {
@@ -27,11 +27,16 @@ function Login() {
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = async data => {
-        // const result = await login(data.email, data.password)
-        const result = true
+        const result = await login(data.phone)
+        result.code = 200
 
-        if(result){
+        if(result.code === 200){
             navigate('/dashboards')
+        }else{
+            Swal.fire({
+                icon: 'warning',
+                title: result.message
+            })
         }
     }
 
@@ -61,23 +66,10 @@ function Login() {
                                     <TextField
                                         fullWidth
                                         id="fullWidth"
-                                        label="Email *"
-                                        {...register("email", { required: { value: true, message: "Email is required!"}, pattern: {value: /^\S+@\S+$/i, message: 'Invalid email address!'} })}
-                                        helperText={(errors.email) ? errors.email.message : ''}
+                                        label="Phone"
+                                        {...register("phone", { required: { value: true, message: "Phone is required!"}, pattern: {value: /^[0-9]+$/i, message: 'Invalid phone number!'} })}
+                                        helperText={(errors.phone) ? errors.phone.message : ''}
                                         />
-
-                                    <TextField
-                                        fullWidth
-                                        required
-                                        id="fullWidth"
-                                        type="password"
-                                        label="Password"
-                                        {...register("password", { required: {
-                                            value: true,
-                                            message: "Password is required!"
-                                        }})}
-                                        helperText={(errors.password) ? errors.password.message : ''}
-                                    />
                                     <Button type="submit" variant="contained" sx={{ mt: 2 }}> Login </Button>
                                     <Button type="button" variant="text" sx={{ mt: 2, float: 'right' }} onClick={() => navigate('/register')}> Daftar </Button>
                             </Box>
