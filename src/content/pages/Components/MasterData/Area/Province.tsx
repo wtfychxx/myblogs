@@ -21,7 +21,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { list } from 'src/api/masterData';
+import { detail, list, insert, deleteData } from 'src/api/masterData';
 
 type Inputs = {
   id: number,
@@ -35,14 +35,18 @@ export interface SideProps{
 function Province() {
   const [open, setOpen] = useState(false)
   const [tableData, setTableData] = useState([])
+  const [message, setMessage] = useState('')
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
-    const data = await list('Province')
+    const result = await list('province')
 
-    // if(data.result){
-    //   setTableData(data.result);
-    // }
+    if(result){
+      setMessage(result.message)
+      if(result.data.length){
+        setTableData(result.data)
+      }
+    }
   }
 
   useEffect(() => {
@@ -58,21 +62,43 @@ function Province() {
   }
 
   const handleDelete = (id: number) => {
-      return Swal.fire({
-          icon: 'question',
-          title: 'Are you sure to delete?',
-          text: "You won't be able to revert this!",
-          showCancelButton: true,
-          confirmButtonText: 'Do it!'
-      }).then((result) => {
-          if(result.value){
+    return Swal.fire({
+        icon: 'question',
+        title: 'Are you sure to delete?',
+        text: "You won't be able to revert this!",
+        showCancelButton: true,
+        confirmButtonText: 'Do it!'
+    }).then(async (result) => {
+        if(result.value){
+          const result = await deleteData('province', id)
 
+          if(result.code === 200){
+            Swal.fire({
+              icon: 'success',
+              title: result.message
+            }).then(() => {
+              getData()
+            })
           }
-      });
-  }
+        }
+    });
+}
 
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    console.log(data)
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const endpoint = (data.id === 0) ? `province` : `province/${data.id}`
+    const result = await insert(endpoint, {name: data.name})
+
+    if(result.code === 200){
+      Swal.fire({
+        icon: 'success',
+        title: result.message
+      })
+    }else{
+      Swal.fire({
+        icon: 'warning',
+        title: result.message
+      })
+    }
   }
 
   const AddButton = () => {

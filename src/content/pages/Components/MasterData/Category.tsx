@@ -14,7 +14,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -42,9 +41,11 @@ function Category() {
   const getData = async () => {
     const result = await list('category')
 
-    setMessage(result.message)
-    if(result.data.length){
-      setTableData(result.data)
+    if(result){
+      setMessage(result.message)
+      if(result.data.length){
+        setTableData(result.data)
+      }
     }
   }
 
@@ -100,6 +101,9 @@ function Category() {
       Swal.fire({
         icon: 'success',
         title: result.message
+      }).then(() => {
+        setOpen(false)
+        getData()
       })
     }else{
       Swal.fire({

@@ -25,9 +25,13 @@ export async function insert(endpoint: string = '', rawData: object = {}){
 }
 
 export async function list(type: string = ''){
-    const res = await axios.get<ServerResponse>(`${apiurl}/${type}`).then(response => response)
-    
-    return res.data
+    try{
+        const res = await axios.get<ServerResponse>(`${apiurl}/${type}`).then(response => response)
+        
+        return res.data
+    }catch(errors){
+        console.error(errors)
+    }
 }
 export async function detail(type: string, id: number){
     const res = await axios.get(`${apiurl}/${type}/${id}`).then(response => response)

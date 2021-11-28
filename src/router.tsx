@@ -42,6 +42,10 @@ const Bank = Loader(lazy(() => import('src/content/pages/Components/MasterData/B
 const Province = Loader(lazy(() => import('src/content/pages/Components/MasterData/Area/Province')));
 const City = Loader(lazy(() => import('src/content/pages/Components/MasterData/Area/City')));
 
+// Master Data Product
+
+const Color = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Color')))
+
 
 const routes: PartialRouteObject[] = [
   {
@@ -197,7 +201,7 @@ const routes: PartialRouteObject[] = [
               },
               {
                 path: '/color',
-                element: <Category />
+                element: <Color />
               },
               {
                 path: '/tenor',
