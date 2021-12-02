@@ -39,6 +39,10 @@ const menuItems: MenuItems[] = [
               link: '/management/masterdata/bank'
             },
             {
+              name: 'Warna',
+              link: '/management/masterdata/color'
+            },
+            {
               name: 'Area',
               link: '/management/masterdata/area',
               items: [

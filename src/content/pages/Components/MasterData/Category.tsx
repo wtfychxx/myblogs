@@ -57,6 +57,8 @@ function Category() {
     setOpen(true)
 
     setValue("id", id)
+    setValue("name", "")
+    
     if(id > 0){
       const result = await detail('category', id)
       

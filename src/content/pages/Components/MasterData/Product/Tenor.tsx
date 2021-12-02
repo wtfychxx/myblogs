@@ -27,16 +27,15 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { useTheme } from '@material-ui/core'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { imageValidation } from 'src/lib/imageValidation'
-import { detail, list, insert, deleteData, uploadImage } from 'src/api/masterData';
+import { detail, list, insert, deleteData } from 'src/api/masterData';
 
 type Inputs = {
   id: number,
   name: string,
-  photoUrl: any,
-  categoryId: number
+  hexCode: string
 }
 
-function Brand() {
+function Tenor() {
 
   const [open, setOpen] = useState(false)
   const [tableData, setTableData] = useState([])
@@ -45,7 +44,7 @@ function Brand() {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
-    const result = await list('brand')
+    const result = await list('province')
 
     if(result){
       setMessage(result.message)
@@ -59,6 +58,13 @@ function Brand() {
     getData()
   },[])
 
+  const handleClickOpen = (id: number = 0) => {
+    setOpen(true);
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  }
 
   const handleDelete = (id: number) => {
     return Swal.fire({
@@ -69,7 +75,7 @@ function Brand() {
         confirmButtonText: 'Do it!'
     }).then(async (result) => {
         if(result.value){
-          const result = await deleteData('brand', id)
+          const result = await deleteData('province', id)
 
           if(result.code === 200){
             Swal.fire({
@@ -84,7 +90,7 @@ function Brand() {
 }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const endpoint = (data.id === 0) ? `brand` : `brand/${data.id}`
+    const endpoint = (data.id === 0) ? `province` : `province/${data.id}`
     const result = await insert(endpoint, {name: data.name})
 
     if(result.code === 200){
@@ -100,58 +106,20 @@ function Brand() {
     }
   }
 
-  const handleClickOpen = async (id: number = 0) => {
-    setOpen(true);
-
-    setValue("id", id)
-    setValue("name", "")
-    
-    if(id > 0){
-      const result = await detail('brand', id)
-      
-      if(result.code === 200){
-        setValue("name", result.data.name)
-      }
-    }
-  }
-
-  const handleClose = () => {
-    setOpen(false);
-  }
-
   const AddButton = () => {
     return(
       <Button variant="contained" onClick={() => handleClickOpen()}> Add </Button>
     )
   }
 
-  const fileValidation = async (e:any) => {
-    const isValid = imageValidation(e.target.files[0])
-    const file = e.target.files[0]
-
-    if(isValid){
-      const formData = new FormData()
-      formData.append('file', file)
-
-      const upload = await uploadImage(formData)
-
-      if(upload.status === 'success'){
-        Swal.fire({
-          icon: 'success',
-          title: upload.message
-        })
-      }
-    }
-  }
-
   return (
     <>
       <Helmet>
-        <title>Brand</title>
+        <title>Tenor</title>
       </Helmet>
       <PageTitleWrapper>
         <PageTitle
-          heading="Brand"
+          heading="Tenor"
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -164,15 +132,15 @@ function Brand() {
         >
           <Grid item xs={12}>
             <Card>
-              <CardHeader title="Brand List" action={<AddButton />} />
+              <CardHeader title="Tenor List" action={<AddButton />} />
               <Divider />
               <CardContent>
                 <TableContainer component={Paper}>
-                  <Table aria-label="Brand table">
+                  <Table aria-label="Tenor table">
                     <TableHead>
                       <TableRow>
                         <TableCell> Name </TableCell>
-                        <TableCell> Category </TableCell>
+                        <TableCell> Hex Code </TableCell>
                         <TableCell> </TableCell>
                       </TableRow>
                     </TableHead>
@@ -180,7 +148,7 @@ function Brand() {
                       {tableData.map((row) => (
                         <TableRow key={row.id}>
                           <TableCell><Link href="#" underline="none" onClick={() => handleClickOpen(row.id)}>{row.name}</Link></TableCell>
-                          <TableCell>{row.description}</TableCell>
+                          <TableCell>{row.hexCode}</TableCell>
                           <TableCell><Button variant="text" color="error" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
                         </TableRow>
                       ))}
@@ -192,7 +160,7 @@ function Brand() {
           </Grid>
         </Grid>
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" style={{ zIndex: 7 }}>
-          <DialogTitle> Brand Form </DialogTitle>
+          <DialogTitle> Tenor Form </DialogTitle>
           <Box
             component="form"
             sx={{ '& .MuiTextField-root': { mt: 2, width: 1, zIndex: '7 !important' } }}
@@ -210,31 +178,19 @@ function Brand() {
                 type="Text"
                 fullWidth
                 {...register("name", { required: { value: true, message: "Name is required!" } })}
+                helperText={(errors.name) ? errors.name.message : ''}
               />
 
-              <FormControl fullWidth sx={{ mt: 1 }}>
-                <InputLabel id="label-category"> Category </InputLabel>
-                <Select
-                  label="Category"
-                  labelId="label-category"
-                  {...register("categoryId", { required: { value: true, message: "Category is required!" } })}
-                  >
-                  <MenuItem value={''}>- Choose -</MenuItem>
-                </Select>
-              </FormControl>
-              
-              <Button
-                variant="contained"
-                component="label"
-                sx={{ mt: 2 }}>
-                  Upload Brand Logo
-                  <input
-                    type="file"
-                    hidden
-                    {...register("photoUrl")}
-                    onChange={fileValidation}
-                    />
-              </Button>
+              <TextField
+                margin="dense"
+                id="Hex Code"
+                label="Hex Code"
+                type="Text"
+                fullWidth
+                {...register("hexCode", { required: { value: true, message: "Hex Code is required!" }, pattern: { value: /^#([0-9A-F]{3}){1,2}$/i, message: "Please insert a valid hexa color code!" } })}
+                helperText={(errors.hexCode) ? errors.hexCode.message : ''}
+              />
+
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
@@ -248,4 +204,4 @@ function Brand() {
   );
 }
 
-export default Brand;
+export default Tenor;

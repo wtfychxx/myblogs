@@ -36,6 +36,7 @@ const StatusMaintenance = Loader(lazy(() => import('src/content/pages/Status/Mai
 const Category = Loader(lazy(() => import('src/content/pages/Components/MasterData/Category')));
 const Brand = Loader(lazy(() => import('src/content/pages/Components/MasterData/Brand')));
 const Bank = Loader(lazy(() => import('src/content/pages/Components/MasterData/Bank')));
+const Article = Loader(lazy(() => import('src/content/pages/Components/MasterData/Article')));
 
 // Master Data Area
 
@@ -45,6 +46,7 @@ const City = Loader(lazy(() => import('src/content/pages/Components/MasterData/A
 // Master Data Product
 
 const Color = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Color')))
+const Tenor = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Tenor')))
 
 
 const routes: PartialRouteObject[] = [
@@ -166,6 +168,10 @@ const routes: PartialRouteObject[] = [
             element: <Bank />
           },
           {
+            path: 'color',
+            element: <Color />
+          },
+          {
             path: 'area',
             children: [
               {
@@ -205,7 +211,7 @@ const routes: PartialRouteObject[] = [
               },
               {
                 path: '/tenor',
-                element: <Category />
+                element: <Tenor />
               },
               {
                 path: '/location',
@@ -215,7 +221,7 @@ const routes: PartialRouteObject[] = [
           },
           {
             path: 'article',
-            element: <Category />
+            element: <Article />
           },
           {
             path: 'discussion',

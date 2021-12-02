@@ -19,8 +19,9 @@ export async function insert(endpoint: string = '', rawData: object = {}){
         const res = await axios.post(`${apiurl}/${endpoint}`, JSON.stringify(rawData))
     
         return res.data;
-    }catch(error){
-        console.error(error);
+    }catch(errors){
+        console.error(errors);
+        return errors
     }
 }
 
@@ -31,12 +32,18 @@ export async function list(type: string = ''){
         return res.data
     }catch(errors){
         console.error(errors)
+        // return errors
     }
 }
 export async function detail(type: string, id: number){
-    const res = await axios.get(`${apiurl}/${type}/${id}`).then(response => response)
+    try{
+        const res = await axios.get(`${apiurl}/${type}/${id}`).then(response => response)
 
-    return res.data
+        return res.data
+    }catch(errors){
+        console.error(errors)
+        // return errors
+    }
 }
 
 export async function deleteData(type: string, id: number){

@@ -55,8 +55,25 @@ function Bank() {
     getData()
   },[])
 
-  const handleClickOpen = (id: number = 0) => {
+  const handleClickOpen = async (id: number = 0) => {
     setOpen(true);
+
+    setValue("id", id)
+    setValue("name", "")
+    setValue("shortName", "")
+    setValue("accountNumber", "")
+    setValue("bankCode", "")
+
+    if(id > 0){
+      const result = await detail('bank', id)
+
+      if(result.code === 200){
+        setValue("name", result.data.name)
+        setValue("shortName", result.data.shortName)
+        setValue("accountNumber", result.data.accountNumber)
+        setValue("bankCode", result.data.bankCode)
+      }
+    }
   }
 
   const handleClose = () => {
@@ -186,6 +203,7 @@ function Bank() {
                   fullWidth
                   {...register("name", {required: { value: true, message: "Name is required!" }})}
                   helperText={(errors.name) ? errors.name.message : ''}
+                  variant="outlined"
                 />
                 <TextField
                     autoFocus
@@ -199,6 +217,7 @@ function Bank() {
                                     pattern: { value: /^[0-9]+$/i, message: "Numbers Only" }
                                 })}
                     helperText={(errors.shortName) ? errors.shortName.message : ''}
+                    variant="outlined"
                     />
                 <TextField
                     autoFocus
@@ -208,6 +227,7 @@ function Bank() {
                     fullWidth
                     {...register("accountNumber", { required: { value: true, message: "Account number is required" } })}
                     helperText={(errors.accountNumber) ? errors.accountNumber.message : ''}
+                    variant="outlined"
                     />
                 <TextField
                     autoFocus
@@ -217,6 +237,7 @@ function Bank() {
                     fullWidth
                     {...register("bankCode", { required: { value: true, message: "Bank code is required" } })}
                     helperText={(errors.bankCode) ? errors.bankCode.message : ''}
+                    variant="outlined"
                     />
             </DialogContent>
             <DialogActions>

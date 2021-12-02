@@ -149,7 +149,7 @@ function City() {
                         return(
                           <TableRow key={i}>
                             <TableCell><Button variant="text" onClick={() => handleClickOpen(entry.id)}>{entry.name}</Button></TableCell>
-                            <TableCell>{entry.province}</TableCell>
+                            <TableCell>{entry.provinceId}</TableCell>
                             <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
                           </TableRow>
                         )
