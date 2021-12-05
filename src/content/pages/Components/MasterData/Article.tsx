@@ -3,28 +3,22 @@ import { useEffect, useRef, useState } from 'react'
 import PageTitle from 'src/components/PageTitle'
 import PageTitleWrapper from 'src/components/PageTitleWrapper'
 import Swal from 'sweetalert2'
-import { Container, Grid, Card, CardHeader, CardContent, Divider, Box} from '@material-ui/core';
+import { Container, Grid, Card, CardHeader, CardContent, Divider, Box, Paper} from '@material-ui/core';
+import CardMedia from '@material-ui/core/CardMedia'
+import CardActions from '@material-ui/core/CardActions'
 import Footer from 'src/components/Footer'
 import Button from '@material-ui/core/Button'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import Paper from '@material-ui/core/Paper'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
 import TextField from '@material-ui/core/TextField'
-import MenuItem from '@material-ui/core/MenuItem'
-import Stack from '@material-ui/core/Stack'
 import Typography from '@material-ui/core/Typography'
-import { Cancel } from '@material-ui/icons'
+import Link from '@material-ui/core/Link'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { detail, list, insert, deleteData } from 'src/api/masterData'
-import { WithContext as ReactTags } from 'react-tag-input'
+import { useTheme } from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close';
 
 type Inputs = {
   id: number,
@@ -50,9 +44,22 @@ function Article() {
     }
   })
 
-  const getData = async () => {
-    const result = await list('category')
+  const theme = useTheme()
 
+  const getData = async () => {
+    const result = await list('article')
+
+    setTableData([
+      {
+        id: 1,
+        title: "Judul artikel",
+        content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque quo non accusantium dolorem nisi, cumque asperiores exercitationem adipisci neque facere minima dignissimos blanditiis, consequatur labore rem laboriosam in explicabo deleniti, sed cupiditate ipsum illo numquam perspiciatis. Velit voluptas hic temporibus cum nam laboriosam, dolore aut veritatis atque alias ab, minima ipsa deserunt quidem quisquam? Aperiam hic eos ipsum voluptas ipsa amet nisi quam quaerat culpa. Nulla mollitia, recusandae iste ut reprehenderit laboriosam voluptatibus, praesentium tenetur deserunt accusantium, minus autem. Quos incidunt distinctio laborum fuga, eius dignissimos consequatur magni modi, molestiae eveniet quidem voluptates delectus harum sapiente a alias, quisquam voluptatibus obcaecati repellat doloribus culpa nihil maxime maiores perferendis! Provident labore rerum asperiores pariatur, facere dolorum quo deleniti et nihil ratione!",
+        created: "2020-08-24",
+        creator: "Fadhli Yulyanto",
+        tags: "Otomotif, Motor, Mobil",
+        likes: "200"
+      }
+    ])
     if(result){
       setMessage(result.message)
       if(result.data.length){
@@ -147,6 +154,12 @@ function Article() {
 
   const delimiter = [keyCodes.comma, keyCodes.enter]
 
+  const addTags = (e: any) => {
+    if(e.keyCode === 13){
+      alert('masuk')
+    }
+  }
+
   return (
     <>
       <Helmet>
@@ -170,42 +183,30 @@ function Article() {
               <CardHeader title="Article List" action={<AddButton />} />
               <Divider />
               <CardContent>
-                <TableContainer component={Paper}>
-                  <Table aria-label="Article table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell> Title </TableCell>
-                        <TableCell> Created </TableCell>
-                        <TableCell> Creator </TableCell>
-                        <TableCell> Tags </TableCell>
-                        <TableCell> Likes </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {
-                      (tableData.length) ? tableData.map((entry, i) => {
-                        return(
-                          <TableRow key={i}>
-                            <TableCell><Button variant="text" onClick={() => handleClickOpen(entry.id)}>{entry.title}</Button></TableCell>
-                            <TableCell>{entry.created}</TableCell>
-                            <TableCell>{entry.creator}</TableCell>
-                            <TableCell>{entry.tags}</TableCell>
-                            <TableCell>{entry.likes}</TableCell>
-                            <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
-                          </TableRow>
-                        )
-                      })
-                      : <TableRow>
-                        <TableCell colSpan={2}>{message}</TableCell>
-                      </TableRow>
-                    }
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                <Grid container spacing={4} component={Paper}>
+                  {tableData.map((entry, i) => {
+                    return(
+                    <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+                      <Card>
+                        <CardHeader title={<Link href="#" underline="none" onClick={() => handleClickOpen(entry.id)}>{entry.title}</Link>} action={<CloseIcon sx={{ cursor: 'pointer' }}  onClick={() => handleDelete(entry.id)} />} />
+                        <CardContent>
+                          <Typography gutterBottom variant="body2" color="text.secondary">
+                            {entry.content.split(/\s+/, 20).join(" ")}
+                          </Typography>
+                          <Typography variant="h5" component="div" sx={{ color: theme.colors.primary.main }}>
+                            {entry.creator} - {entry.created}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                    )
+                  })}
+                </Grid>
               </CardContent>
             </Card>
           </Grid>
         </Grid>
+        {/* Modal Dialog */}
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" style={{ zIndex: 7 }}>
           <DialogTitle> Article Form </DialogTitle>
           <Box
@@ -230,7 +231,6 @@ function Article() {
               />
 
               <TextField
-                autoFocus
                 margin="dense"
                 label="Content"
                 type="text"
@@ -241,13 +241,12 @@ function Article() {
                 helperText={(errors.content) ? errors.content.message : ''}
               />
 
-              <ReactTags
-                inputFieldPosition="bottom"
-                autocomplete
-                tags={getValues("tags")}
-                handleAddition={handleAddition}
+              <TextField
+                label="Content"
+                type="text"
+                fullWidth
                 {...register("tags")}
-                delimiters={delimiter}
+                helperText={(errors.tags) ? (errors.tags as any)?.message : ''}
               />
 
             </DialogContent>
@@ -257,6 +256,7 @@ function Article() {
             </DialogActions>
           </Box>
         </Dialog>
+        {/* End Modal Dialog */}
       </Container>
       <Footer />
     </>

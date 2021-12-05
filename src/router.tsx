@@ -37,6 +37,7 @@ const Category = Loader(lazy(() => import('src/content/pages/Components/MasterDa
 const Brand = Loader(lazy(() => import('src/content/pages/Components/MasterData/Brand')));
 const Bank = Loader(lazy(() => import('src/content/pages/Components/MasterData/Bank')));
 const Article = Loader(lazy(() => import('src/content/pages/Components/MasterData/Article')));
+const Discuss = Loader(lazy(() => import('src/content/pages/Components/MasterData/Discuss')));
 
 // Master Data Area
 
@@ -225,7 +226,7 @@ const routes: PartialRouteObject[] = [
           },
           {
             path: 'discussion',
-            element: <Category />
+            element: <Discuss />
           },
           {
             path: 'review',

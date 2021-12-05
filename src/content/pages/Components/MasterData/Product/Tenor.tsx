@@ -21,12 +21,8 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
-import Select from '@material-ui/core/Select'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
 import { useTheme } from '@material-ui/core'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { imageValidation } from 'src/lib/imageValidation'
 import { detail, list, insert, deleteData } from 'src/api/masterData';
 
 type Inputs = {

@@ -5,7 +5,7 @@ function HeaderLogo() {
   return (
     <>
       <Link to="/dashboards">
-        <Logo style={{ width: 100 }} />
+        <Logo style={{ width: 200, height: 'auto' }} />
       </Link>
     </>
 
