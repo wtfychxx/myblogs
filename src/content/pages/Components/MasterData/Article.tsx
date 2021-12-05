@@ -47,7 +47,7 @@ function Article() {
   const theme = useTheme()
 
   const getData = async () => {
-    const result = await list('article')
+    const result = await list('articles')
 
     setTableData([
       {
@@ -62,7 +62,7 @@ function Article() {
     ])
     if(result){
       setMessage(result.message)
-      if(result.data.length){
+      if(result.data?.length){
         setTableData(result.data)
       }
     }
@@ -79,7 +79,7 @@ function Article() {
     setValue("title", "")
     
     if(id > 0){
-      const result = await detail('category', id)
+      const result = await detail('articles', id)
       
       if(result.code === 200){
         setValue("title", result.data.title)

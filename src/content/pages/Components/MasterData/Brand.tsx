@@ -40,6 +40,7 @@ function Brand() {
 
   const [open, setOpen] = useState(false)
   const [tableData, setTableData] = useState([])
+  const [category, setCategory] = useState([])
   const [message, setMessage] = useState('')
   const theme = useTheme()
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
@@ -56,7 +57,7 @@ function Brand() {
   }
 
   useEffect(() => {
-    getData()
+    const result = getData()
   },[])
 
 
