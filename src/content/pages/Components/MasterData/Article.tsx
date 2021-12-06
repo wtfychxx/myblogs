@@ -100,7 +100,7 @@ function Article() {
           confirmButtonText: 'Do it!'
       }).then(async (result) => {
           if(result.value){
-            const result = await deleteData('category', id)
+            const result = await deleteData('articles', id)
 
             if(result.code === 200){
               Swal.fire({
@@ -115,8 +115,8 @@ function Article() {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const endpoint = (data.id === 0) ? `category` : `category/${data.id}`
-    const result = await insert(endpoint, {title: data.title})
+    const endpoint = (data.id === 0) ? `articles` : `articles/${data.id}`
+    const result = await insert(endpoint, data)
 
     if(result.code === 200){
       Swal.fire({
@@ -181,9 +181,8 @@ function Article() {
           <Grid item xs={12}>
             <Card>
               <CardHeader title="Article List" action={<AddButton />} />
-              <Divider />
               <CardContent>
-                <Grid container spacing={4} component={Paper}>
+                <Grid container spacing={4}>
                   {tableData.map((entry, i) => {
                     return(
                     <Grid item xs={12} sm={6} md={4} lg={3} key={i}>

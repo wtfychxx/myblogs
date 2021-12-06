@@ -14,11 +14,28 @@ interface ServerData{
     name: string
 }
 
-export async function insert(endpoint: string = '', rawData: object = {}){
+interface ParamData{
+    endpoint: string,
+    rawData: rawData
+}
+
+interface rawData{
+    id: number,
+    name: string
+}
+
+export async function insert<ParamData>(endpoint, rawData){
     try{
-        const res = await axios.post(`${apiurl}/${endpoint}`, JSON.stringify(rawData))
+        if(rawData.id === 0){
+            const res = await axios.post(`${apiurl}/${endpoint}`, JSON.stringify(rawData))
+
+            return res.data
+        }else{
+            const res = await axios.put(`${apiurl}/${endpoint}`, JSON.stringify(rawData))
+
+            return res.data
+        }
     
-        return res.data;
     }catch(errors){
         console.error(errors);
         return errors

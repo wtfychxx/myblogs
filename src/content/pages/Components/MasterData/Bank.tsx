@@ -56,8 +56,6 @@ function Bank() {
   },[])
 
   const handleClickOpen = async (id: number = 0) => {
-    setOpen(true);
-
     setValue("id", id)
     setValue("name", "")
     setValue("shortName", "")
@@ -74,6 +72,8 @@ function Bank() {
         setValue("bankCode", result.data.bankCode)
       }
     }
+
+    setOpen(true);
   }
 
   const handleClose = () => {

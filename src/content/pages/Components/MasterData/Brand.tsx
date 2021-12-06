@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import PageTitle from 'src/components/PageTitle'
 import PageTitleWrapper from 'src/components/PageTitleWrapper'
 import Swal from 'sweetalert2'
-import { Container, Grid, Card, CardHeader, CardContent, Divider, FormControl } from '@material-ui/core'
+import { Container, Grid, Card, CardHeader, CardContent, Divider, FormControl, Typography } from '@material-ui/core'
 import Footer from 'src/components/Footer'
 import Button from '@material-ui/core/Button'
 import Table from '@material-ui/core/Table'
@@ -27,7 +27,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { useTheme } from '@material-ui/core'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { imageValidation } from 'src/lib/imageValidation'
-import { detail, list, insert, deleteData, uploadImage } from 'src/api/masterData';
+import { detail, list, insert, deleteData, uploadImage } from 'src/api/masterData'
+import { Controller } from 'react-hook-form'
+import ReactHookFormSelect from 'src/components/ReactHookFormSelect'
 
 type Inputs = {
   id: number,
@@ -43,7 +45,7 @@ function Brand() {
   const [category, setCategory] = useState([])
   const [message, setMessage] = useState('')
   const theme = useTheme()
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
+  const { register, handleSubmit, control, setValue, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
     const result = await list('brand')
@@ -57,7 +59,12 @@ function Brand() {
   }
 
   useEffect(() => {
-    const result = getData()
+    async function setOption(){
+      const response = await list('category')
+      setCategory(response?.data)
+    }
+    setOption()
+    getData()
   },[])
 
 
@@ -210,18 +217,29 @@ function Brand() {
                 label="Name"
                 type="Text"
                 fullWidth
+                variant="outlined"
                 {...register("name", { required: { value: true, message: "Name is required!" } })}
+                helperText={errors.name ? errors.name.message: ''}
               />
-
+              
               <FormControl fullWidth sx={{ mt: 1 }}>
                 <InputLabel id="label-category"> Category </InputLabel>
-                <Select
+                <ReactHookFormSelect
+                  control={control}
+                  name="categoryId"
+                  id="categoryId"
                   label="Category"
-                  labelId="label-category"
+                  defaultValue={''}
                   {...register("categoryId", { required: { value: true, message: "Category is required!" } })}
                   >
-                  <MenuItem value={''}>- Choose -</MenuItem>
-                </Select>
+                    <MenuItem value={''}>- choose -</MenuItem>
+                    {(category.length ? category : []).map((entry, i) => {
+                      return(
+                        <MenuItem key={i} value={entry.id}>{entry.name}</MenuItem>
+                      )
+                    })}
+                </ReactHookFormSelect>
+                {errors.categoryId ? <Typography variant="subtitle1"> {errors.categoryId.message} </Typography>: ''}
               </FormControl>
               
               <Button

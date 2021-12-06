@@ -54,8 +54,6 @@ function Category() {
   },[])
 
   const handleClickOpen = async (id: number = 0) => {
-    setOpen(true)
-
     setValue("id", id)
     setValue("name", "")
     
@@ -66,6 +64,8 @@ function Category() {
         setValue("name", result.data.name)
       }
     }
+
+    setOpen(true)
   }
 
   const handleClose = () => {
@@ -97,7 +97,7 @@ function Category() {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const endpoint = (data.id === 0) ? `category` : `category/${data.id}`
-    const result = await insert(endpoint, {name: data.name})
+    const result = await insert(endpoint, data)
 
     if(result.code === 200){
       Swal.fire({

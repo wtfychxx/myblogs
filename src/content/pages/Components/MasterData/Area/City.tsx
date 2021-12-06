@@ -194,6 +194,7 @@ function City() {
                     {...register("provinceId", { required: { value: true, message: "Province is required!" } })}
                     >
                         <MenuItem value={''}>- Choose -</MenuItem>
+                        <MenuItem value={1}>Test</MenuItem>
                     </Select>
                 </FormControl>
             </DialogContent>

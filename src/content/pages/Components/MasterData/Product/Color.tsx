@@ -44,7 +44,7 @@ function Color() {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
-    const result = await list('province')
+    const result = await list('colour')
 
     if(result){
       setMessage(result.message)
@@ -75,7 +75,7 @@ function Color() {
         confirmButtonText: 'Do it!'
     }).then(async (result) => {
         if(result.value){
-          const result = await deleteData('province', id)
+          const result = await deleteData('colour', id)
 
           if(result.code === 200){
             Swal.fire({
@@ -90,7 +90,7 @@ function Color() {
 }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const endpoint = (data.id === 0) ? `province` : `province/${data.id}`
+    const endpoint = (data.id === 0) ? `colour` : `colour/${data.id}`
     const result = await insert(endpoint, {name: data.name})
 
     if(result.code === 200){
