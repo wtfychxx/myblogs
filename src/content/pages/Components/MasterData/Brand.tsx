@@ -92,6 +92,7 @@ function Brand() {
 }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data)
     const endpoint = (data.id === 0) ? `brand` : `brand/${data.id}`
     const result = await insert(endpoint, {name: data.name})
 
@@ -230,7 +231,6 @@ function Brand() {
                   id="categoryId"
                   label="Category"
                   defaultValue={''}
-                  {...register("categoryId", { required: { value: true, message: "Category is required!" } })}
                   >
                     <MenuItem value={''}>- choose -</MenuItem>
                     {(category.length ? category : []).map((entry, i) => {

@@ -22,6 +22,7 @@ const ReactHookFormSelect = ({
         name={name}
         control={control}
         defaultValue={defaultValue}
+        rules={{ required: {value: true, message: `${label} is required!`} }}
       />
     </FormControl>
   );
