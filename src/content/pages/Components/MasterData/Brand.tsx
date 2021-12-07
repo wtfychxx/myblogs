@@ -110,8 +110,6 @@ function Brand() {
   }
 
   const handleClickOpen = async (id: number = 0) => {
-    setOpen(true);
-
     setValue("id", id)
     setValue("name", "")
     
@@ -122,6 +120,8 @@ function Brand() {
         setValue("name", result.data.name)
       }
     }
+
+    setOpen(true);
   }
 
   const handleClose = () => {
@@ -224,7 +224,6 @@ function Brand() {
               />
               
               <FormControl fullWidth sx={{ mt: 1 }}>
-                <InputLabel id="label-category"> Category </InputLabel>
                 <ReactHookFormSelect
                   control={control}
                   name="categoryId"

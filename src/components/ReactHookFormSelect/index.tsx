@@ -14,11 +14,15 @@ const ReactHookFormSelect = ({
   const labelId = `${name}-label`;
   return (
     <FormControl {...props}>
-      <InputLabel id={labelId}>{label}</InputLabel>
       <Controller
-        render={({ field }) => <Select {...field} labelId={labelId} label={label}>
-        {children}
-      </Select>}
+        render={({ field }) => (
+          <>
+            <InputLabel id={labelId}>{label}</InputLabel>
+            <Select {...field} labelId={labelId} label={label}>
+              {children}
+            </Select>
+          </>
+        )}
         name={name}
         control={control}
         defaultValue={defaultValue}
