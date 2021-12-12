@@ -22,6 +22,7 @@ import ExpandMoreTwoToneIcon from '@material-ui/icons/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@material-ui/icons/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@material-ui/icons/AccountTreeTwoTone';
+import { useNavigate } from 'react-router-dom';
 
 const UserBoxButton = experimentalStyled(Button)(
   ({ theme }) => `
@@ -59,7 +60,8 @@ const UserBoxDescription = experimentalStyled(Typography)(
 );
 
 function HeaderUserbox() {
-
+  const navigate = useNavigate()
+  
   const user =
   {
     name: 'Catherine Pike',
@@ -141,7 +143,7 @@ function HeaderUserbox() {
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" fullWidth>
+          <Button color="primary" onClick={() => navigate('/')} fullWidth>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>

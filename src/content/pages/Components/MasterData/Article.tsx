@@ -62,7 +62,7 @@ function Article() {
     ])
     if(result){
       setMessage(result.message)
-      if(result.data?.length){
+      if(result.data !== null){
         setTableData(result.data)
       }
     }

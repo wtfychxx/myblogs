@@ -42,8 +42,8 @@ function Province() {
     const result = await list('province')
 
     if(result){
-      setMessage(result.message)
-      if(result.data.length){
+      setMessage('Maaf, belum ada data')
+      if(result.data !== null){
         setTableData(result.data)
       }
     }

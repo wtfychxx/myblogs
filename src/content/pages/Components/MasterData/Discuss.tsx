@@ -42,7 +42,7 @@ function Discuss(){
 
         if(result){
             setMessage(result.message)
-            if(result.data.length){
+            if(result.data !== null){
                 setTableData(result.data)
             }
         }
@@ -53,15 +53,15 @@ function Discuss(){
     }, [])
 
     const handleClickOpen = async (id: number = 0) => {
-        setOpen(true)
-
         if(id > 0){
             const result = await detail('discuss', id)
 
             if(result.code === 200){
-                
+                setValue("content", result.data.content)
             }
         }
+
+        setOpen(true)
     }
 
     const handleClose = () => {

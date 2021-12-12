@@ -38,14 +38,14 @@ function Bank() {
   const [open, setOpen] = useState(false)
   const [tableData, setTableData] = useState([])
   const [message, setMessage] = useState('')
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
     const result = await list('bank')
 
     if(result){
-      setMessage(result.message)
-      if(result.data.length){
+      setMessage('Maaf, belum ada data')
+      if(result.data !== null){
         setTableData(result.data)
       }
     }
@@ -56,16 +56,14 @@ function Bank() {
   },[])
 
   const handleClickOpen = async (id: number = 0) => {
+    reset()
     setValue("id", id)
-    setValue("name", "")
-    setValue("shortName", "")
-    setValue("accountNumber", "")
-    setValue("bankCode", "")
 
     if(id > 0){
       const result = await detail('bank', id)
 
       if(result.code === 200){
+        setValue("id", id)
         setValue("name", result.data.name)
         setValue("shortName", result.data.shortName)
         setValue("accountNumber", result.data.accountNumber)
@@ -105,7 +103,7 @@ function Bank() {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const endpoint = (data.id === 0) ? `bank` : `bank/${data.id}`
-    const result = await insert(endpoint, {name: data.name})
+    const result = await insert(endpoint, data)
 
     if(result.code === 200){
       Swal.fire({

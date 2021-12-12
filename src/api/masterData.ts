@@ -20,11 +20,11 @@ interface ParamData{
 }
 
 interface rawData{
-    id: number,
+    id: any,
     name: string
 }
 
-export async function insert<ParamData>(endpoint, rawData){
+export async function insert(endpoint, rawData){
     try{
         if(rawData.id === 0){
             const res = await axios.post(`${apiurl}/${endpoint}`, JSON.stringify(rawData))

@@ -61,6 +61,10 @@ const menuItems: MenuItems[] = [
               link: '/management/masterdata/product',
               items: [
                 {
+                  name: 'Master Product',
+                  link: '/management/masterdata/product/masterProduct'
+                },
+                {
                   name: 'Warna',
                   link: '/management/masterdata/product/color'
                 },

@@ -46,7 +46,8 @@ const City = Loader(lazy(() => import('src/content/pages/Components/MasterData/A
 
 // Master Data Product
 
-const Color = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Color')))
+const MasterProduct = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Master')))
+const Color = Loader(lazy(() => import('src/content/pages/Components/MasterData/Color')))
 const Tenor = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Tenor')))
 
 
@@ -205,6 +206,10 @@ const routes: PartialRouteObject[] = [
                     replace
                   />
                 )
+              },
+              {
+                path: '/masterProduct',
+                element: <MasterProduct />
               },
               {
                 path: '/color',

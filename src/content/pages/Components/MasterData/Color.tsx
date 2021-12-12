@@ -32,7 +32,7 @@ import { detail, list, insert, deleteData } from 'src/api/masterData';
 type Inputs = {
   id: number,
   name: string,
-  hexCode: string
+  hex: string
 }
 
 function Color() {
@@ -41,14 +41,14 @@ function Color() {
   const [tableData, setTableData] = useState([])
   const [message, setMessage] = useState('')
   const theme = useTheme()
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>()
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
     const result = await list('colour')
 
     if(result){
       setMessage(result.message)
-      if(result.data.length){
+      if(result.data !== null){
         setTableData(result.data)
       }
     }
@@ -58,7 +58,19 @@ function Color() {
     getData()
   },[])
 
-  const handleClickOpen = (id: number = 0) => {
+  const handleClickOpen = async (id: number = 0) => {
+    reset()
+    setValue("id", id)
+
+    if(id > 0){
+      const result = await detail('colour', id)
+
+      if(result.code === 200){
+        setValue("id", id)
+        setValue("name", result.data.name)
+        setValue("hex", result.data.hex)
+      }
+    }
     setOpen(true);
   }
 
@@ -91,12 +103,15 @@ function Color() {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const endpoint = (data.id === 0) ? `colour` : `colour/${data.id}`
-    const result = await insert(endpoint, {name: data.name})
+    const result = await insert(endpoint, data)
 
     if(result.code === 200){
       Swal.fire({
         icon: 'success',
         title: result.message
+      }).then(() => {
+        setOpen(false)
+        getData()
       })
     }else{
       Swal.fire({
@@ -147,8 +162,8 @@ function Color() {
                     <TableBody>
                       {tableData.map((row) => (
                         <TableRow key={row.id}>
-                          <TableCell><Link href="#" underline="none" onClick={() => handleClickOpen(row.id)}>{row.name}</Link></TableCell>
-                          <TableCell>{row.hexCode}</TableCell>
+                          <TableCell><Button variant="text" onClick={() => handleClickOpen(row.id)}>{row.name}</Button></TableCell>
+                          <TableCell>{row.hex}</TableCell>
                           <TableCell><Button variant="text" color="error" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
                         </TableRow>
                       ))}
@@ -187,8 +202,8 @@ function Color() {
                 label="Hex Code"
                 type="Text"
                 fullWidth
-                {...register("hexCode", { required: { value: true, message: "Hex Code is required!" }, pattern: { value: /^#([0-9A-F]{3}){1,2}$/i, message: "Please insert a valid hexa color code!" } })}
-                helperText={(errors.hexCode) ? errors.hexCode.message : ''}
+                {...register("hex", { required: { value: true, message: "Hex Code is required!" }, pattern: { value: /^#([0-9A-F]{3}){1,2}$/i, message: "Please insert a valid hexa color code!" } })}
+                helperText={(errors.hex) ? errors.hex.message : ''}
               />
 
             </DialogContent>

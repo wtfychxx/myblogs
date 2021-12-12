@@ -11,7 +11,8 @@ import {
   CardHeader,
   CardContent,
   Divider,
-  Box,
+  FormControl,
+  Typography,
 } from "@material-ui/core"
 import Footer from "src/components/Footer"
 import Button from "@material-ui/core/Button"
@@ -22,42 +23,54 @@ import TableContainer from "@material-ui/core/TableContainer"
 import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 import Paper from "@material-ui/core/Paper"
+import Link from "@material-ui/core/Link"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogActions from "@material-ui/core/DialogActions"
 import TextField from "@material-ui/core/TextField"
+import Box from "@material-ui/core/Box"
+import Select from "@material-ui/core/Select"
+import InputLabel from "@material-ui/core/InputLabel"
+import MenuItem from "@material-ui/core/MenuItem"
+import { useTheme } from "@material-ui/core"
 import { useForm, SubmitHandler } from "react-hook-form"
+import { imageValidation } from "src/lib/imageValidation"
 import { detail, list, insert, deleteData } from "src/api/masterData"
+import { IosShare, SettingsInputComponentTwoTone } from "@material-ui/icons"
+import ReactHookFormSelect from "src/components/ReactHookFormSelect"
 
 type Inputs = {
   id: number
   name: string
+  basePrice: number
+  discussId: number
+  reviewId: number
   description: string
+  brandId: number
+  cityId: number
 }
 
-export interface SideProps {
-  tableData: string[]
-}
-
-function Category() {
+function Master() {
   const [open, setOpen] = useState(false)
   const [tableData, setTableData] = useState([])
   const [message, setMessage] = useState("")
+  const theme = useTheme()
   const {
     register,
     handleSubmit,
     setValue,
     reset,
-    formState: { errors },
+    control,
+    formState: { errors }
   } = useForm<Inputs>()
 
   const getData = async () => {
-    const result = await list("category")
+    const result = await list("product")
 
     if (result) {
       setMessage("Maaf, belum ada data")
-      if (result.data !== null) {
+      if (result.data.length) {
         setTableData(result.data)
       }
     }
@@ -72,11 +85,16 @@ function Category() {
     setValue("id", id)
 
     if (id > 0) {
-      const result = await detail("category", id)
+      const result = await detail("product", id)
 
       if (result.code === 200) {
-        setValue("id", id)
         setValue("name", result.data.name)
+        setValue("basePrice", result.data.basePrice)
+        setValue("discussId", result.data.discussId)
+        setValue("reviewId", result.data.reviewId)
+        setValue("description", result.data.description)
+        setValue("brandId", result.data.brandId)
+        setValue("cityId", result.data.cityId)
       }
     }
 
@@ -138,13 +156,13 @@ function Category() {
     )
   }
 
-  return (
+  return(
     <>
       <Helmet>
-        <title>Category</title>
+        <title>Product</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageTitle heading="Category" />
+        <PageTitle heading="Product" />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -156,15 +174,20 @@ function Category() {
         >
           <Grid item xs={12}>
             <Card>
-              <CardHeader title="Category List" action={<AddButton />} />
+              <CardHeader title="Product List" action={<AddButton />} />
               <Divider />
               <CardContent>
                 <TableContainer component={Paper}>
-                  <Table aria-label="Category table">
+                  <Table aria-label="Product table">
                     <TableHead>
                       <TableRow>
                         <TableCell> Name </TableCell>
-                        <TableCell> </TableCell>
+                        <TableCell> Base Price </TableCell>
+                        <TableCell> Discuss </TableCell>
+                        <TableCell> Review </TableCell>
+                        <TableCell> Description </TableCell>
+                        <TableCell> Brand </TableCell>
+                        <TableCell> City </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -211,7 +234,7 @@ function Category() {
           maxWidth="sm"
           style={{ zIndex: 7 }}
         >
-          <DialogTitle> Category Form </DialogTitle>
+          <DialogTitle> Product Form </DialogTitle>
           <Box
             component="form"
             sx={{ "& .MuiTextField-root": { mt: 2, width: 1 } }}
@@ -232,6 +255,76 @@ function Category() {
                 })}
                 helperText={errors.name ? errors.name.message : ""}
               />
+
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Base Price"
+                type="text"
+                {...register("basePrice", {
+                  required: { value: true, message: "Base Price is required!" },
+                  pattern: { value: /\d+/g, message: "Please input a valid numbers!" }
+                })}
+                helperText={errors.basePrice ? errors.basePrice.message : ""} />
+
+              <ReactHookFormSelect
+                control={control}
+                name="discussId"
+                id="discussId"
+                label="Discuss"
+                defaultValue={''}
+                rules={{ required: { value: true, message: `Discuss is required!`} }}
+                >
+
+              </ReactHookFormSelect>
+              {errors.discussId ? <Typography sx={{ ml: 1 }} variant="subtitle1"> {errors.discussId.message} </Typography>: ''}
+
+              <ReactHookFormSelect
+                control={control}
+                name="reviewId"
+                id="reviewId"
+                label="Review"
+                defaultValue={''}
+                rules={{ required: { value: true, message: `Review is required!`} }}
+                >
+
+              </ReactHookFormSelect>
+              {errors.reviewId ? <Typography sx={{ ml: 1 }} variant="subtitle1"> {errors.reviewId.message} </Typography>: ''}
+
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Description"
+                type="text"
+                {...register("description")}
+                multiline
+                rows={4}
+                helperText={errors.description ? errors.description.message : ""} />
+
+              <ReactHookFormSelect
+                control={control}
+                name="brandId"
+                id="brandId"
+                label="Brand"
+                defaultValue={''}
+                rules={{ required: { value: true, message: `Brand is required!`} }}
+                >
+
+              </ReactHookFormSelect>
+              {errors.brandId ? <Typography sx={{ ml: 1 }} variant="subtitle1"> {errors.brandId.message} </Typography>: ''}
+
+              <ReactHookFormSelect
+                control={control}
+                name="cityId"
+                id="cityId"
+                label="City"
+                defaultValue={''}
+                rules={{ required: { value: true, message: `City is required!`} }}
+                >
+
+              </ReactHookFormSelect>
+              {errors.brandId ? <Typography sx={{ ml: 1 }} variant="subtitle1"> {errors.brandId.message} </Typography>: ''}
+                
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
@@ -247,4 +340,4 @@ function Category() {
   )
 }
 
-export default Category
+export default Master

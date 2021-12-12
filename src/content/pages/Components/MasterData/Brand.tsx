@@ -45,14 +45,14 @@ function Brand() {
   const [category, setCategory] = useState([])
   const [message, setMessage] = useState('')
   const theme = useTheme()
-  const { register, handleSubmit, control, setValue, formState: { errors } } = useForm<Inputs>()
+  const { register, handleSubmit, control, setValue, reset, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
     const result = await list('brand')
 
     if(result){
-      setMessage(result.message)
-      if(result.data.length){
+      setMessage('Maaf, belum ada data')
+      if(result.data !== null){
         setTableData(result.data)
       }
     }
@@ -92,14 +92,16 @@ function Brand() {
 }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
     const endpoint = (data.id === 0) ? `brand` : `brand/${data.id}`
-    const result = await insert(endpoint, {name: data.name})
+    const result = await insert(endpoint, data)
 
     if(result.code === 200){
       Swal.fire({
         icon: 'success',
         title: result.message
+      }).then(() => {
+        setOpen(false)
+        getData()
       })
     }else{
       Swal.fire({
@@ -110,14 +112,16 @@ function Brand() {
   }
 
   const handleClickOpen = async (id: number = 0) => {
+    reset()
     setValue("id", id)
-    setValue("name", "")
     
     if(id > 0){
       const result = await detail('brand', id)
       
       if(result.code === 200){
+        setValue("id", id)
         setValue("name", result.data.name)
+        setValue("categoryId", result.data.CategoryId)
       }
     }
 
@@ -188,8 +192,8 @@ function Brand() {
                     <TableBody>
                       {tableData.map((row) => (
                         <TableRow key={row.id}>
-                          <TableCell><Link href="#" underline="none" onClick={() => handleClickOpen(row.id)}>{row.name}</Link></TableCell>
-                          <TableCell>{row.description}</TableCell>
+                          <TableCell><Button variant="text" onClick={() => handleClickOpen(row.id)}>{row.name}</Button></TableCell>
+                          <TableCell>{row.CategoryName}</TableCell>
                           <TableCell><Button variant="text" color="error" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
                         </TableRow>
                       ))}
@@ -223,23 +227,22 @@ function Brand() {
                 helperText={errors.name ? errors.name.message: ''}
               />
               
-              <FormControl fullWidth sx={{ mt: 1 }}>
-                <ReactHookFormSelect
-                  control={control}
-                  name="categoryId"
-                  id="categoryId"
-                  label="Category"
-                  defaultValue={''}
-                  >
-                    <MenuItem value={''}>- choose -</MenuItem>
-                    {(category.length ? category : []).map((entry, i) => {
-                      return(
-                        <MenuItem key={i} value={entry.id}>{entry.name}</MenuItem>
-                      )
-                    })}
-                </ReactHookFormSelect>
-                {errors.categoryId ? <Typography variant="subtitle1"> {errors.categoryId.message} </Typography>: ''}
-              </FormControl>
+              <ReactHookFormSelect
+                control={control}
+                name="categoryId"
+                id="categoryId"
+                label="Category"
+                defaultValue={''}
+                rules={{ required: { value: true, message: `Discuss is required!`} }}
+                >
+                  <MenuItem value={''}>- choose -</MenuItem>
+                  {((category !== undefined && category.length) ? category : []).map((entry, i) => {
+                    return(
+                      <MenuItem key={i} value={entry.id}>{entry.name}</MenuItem>
+                    )
+                  })}
+              </ReactHookFormSelect>
+              {errors.categoryId ? <Typography variant="subtitle1"> {errors.categoryId.message} </Typography>: ''}
               
               <Button
                 variant="contained"

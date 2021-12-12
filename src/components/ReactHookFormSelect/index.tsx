@@ -13,7 +13,7 @@ const ReactHookFormSelect = ({
 }) => {
   const labelId = `${name}-label`;
   return (
-    <FormControl {...props}>
+    <FormControl fullWidth sx={{ mt: 1.5 }}>
       <Controller
         render={({ field }) => (
           <>
@@ -26,7 +26,7 @@ const ReactHookFormSelect = ({
         name={name}
         control={control}
         defaultValue={defaultValue}
-        rules={{ required: {value: true, message: `${label} is required!`} }}
+        {...props}
       />
     </FormControl>
   );
