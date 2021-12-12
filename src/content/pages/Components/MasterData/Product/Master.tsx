@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import PageTitle from "src/components/PageTitle"
 import PageTitleWrapper from "src/components/PageTitleWrapper"
@@ -32,13 +32,15 @@ import TextField from "@material-ui/core/TextField"
 import Box from "@material-ui/core/Box"
 import Select from "@material-ui/core/Select"
 import InputLabel from "@material-ui/core/InputLabel"
+import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from "@material-ui/core/MenuItem"
 import { useTheme } from "@material-ui/core"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { imageValidation } from "src/lib/imageValidation"
 import { detail, list, insert, deleteData } from "src/api/masterData"
-import { IosShare, SettingsInputComponentTwoTone } from "@material-ui/icons"
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import ReactHookFormSelect from "src/components/ReactHookFormSelect"
+import { styled, alpha } from '@material-ui/core/styles'
 
 type Inputs = {
   id: number
@@ -51,10 +53,61 @@ type Inputs = {
   cityId: number
 }
 
+const StyleMenu = styled((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    open={Boolean()}
+    {...props}
+    />
+))(({ theme }) => ({
+  '& .MuiPaper-root': {
+    borderRadius: 6,
+    marginTop: theme.spacing(1),
+    minWidth: 180,
+    color: theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+    boxShadow:
+      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+    '& .MuiMenu-list': {
+      padding: '4px 0',
+    },
+    '& .MuiMenuItem-root': {
+      '& .MuiSvgIcon-root': {
+        fontSize: 18,
+        color: theme.palette.text.secondary,
+        marginRight: theme.spacing(1.5),
+      },
+      '&:active': {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.selectedOpacity,
+        ),
+      },
+    },
+  },
+}));
+
 function Master() {
   const [open, setOpen] = useState(false)
   const [tableData, setTableData] = useState([])
   const [message, setMessage] = useState("")
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openAnchor = Boolean(anchorEl);
+
+  
+  const handleClickDropdown = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleCloseDropdown = () => {
+    setAnchorEl(null)
+  }
+
+  const handleExcel = (event) => {
+    document.getElementById('fileUpload').click()
+  }
+
   const theme = useTheme()
   const {
     register,
@@ -98,6 +151,7 @@ function Master() {
       }
     }
 
+    // handleCloseDropdown()
     setOpen(true)
   }
 
@@ -148,11 +202,60 @@ function Master() {
     }
   }
 
+  const fileValidation = async (e:any) => {
+    const isValid = imageValidation(e.target.files[0])
+    const file = e.target.files[0]
+
+    if(isValid){
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const upload = {
+        status: 'success',
+        message: 'ok'
+      }
+
+      if(upload.status === 'success'){
+        Swal.fire({
+          icon: 'success',
+          title: upload.message
+        })
+      }
+    }
+  }
+
   const AddButton = () => {
     return (
-      <Button variant="contained" onClick={() => handleClickOpen()}>
-        Add
-      </Button>
+      <div>
+        <Button
+          id="demo-customized-button"
+          variant="contained"
+          onClick={handleClickDropdown}
+          aria-controls="demo-customized-menu"
+          aria-haspopup="true"
+          aria-expanded={openAnchor ? 'true' : undefined}
+          disableElevation
+          endIcon={<KeyboardArrowDownIcon />}
+          >
+          Add
+        </Button>
+        <StyleMenu
+          id="demo-customized-menu"
+          MenuListProps={{
+            'aria-labelledby': 'demo-customized-button',
+          }}
+          anchorEl={anchorEl}
+          open={openAnchor}
+          onClose={handleCloseDropdown}
+        >
+          <MenuItem onClick={() => handleClickOpen()} disableRipple>
+            By a Form
+          </MenuItem>
+          <MenuItem onClick={handleCloseDropdown} disableRipple>
+            By Excel
+          </MenuItem>
+        </StyleMenu>
+      </div>
     )
   }
 
@@ -174,7 +277,42 @@ function Master() {
         >
           <Grid item xs={12}>
             <Card>
-              <CardHeader title="Product List" action={<AddButton />} />
+              <CardHeader title="Product List" action={<div>
+                <Button
+                  id="demo-customized-button"
+                  variant="contained"
+                  onClick={handleClickDropdown}
+                  aria-controls="demo-customized-menu"
+                  aria-haspopup="true"
+                  aria-expanded={openAnchor ? 'true' : undefined}
+                  disableElevation
+                  endIcon={<KeyboardArrowDownIcon />}
+                  >
+                  Add
+                </Button>
+                <StyleMenu
+                  id="demo-customized-menu"
+                  MenuListProps={{
+                    'aria-labelledby': 'demo-customized-button',
+                  }}
+                  anchorEl={anchorEl}
+                  open={openAnchor}
+                  onClose={handleCloseDropdown}
+                >
+                  <MenuItem onClick={() => {handleClickOpen(); handleCloseDropdown()}} disableRipple>
+                    By a Form
+                  </MenuItem>
+                  <MenuItem onClick={handleExcel} disableRipple>
+                    <input
+                      type="file"
+                      id="fileUpload"
+                      hidden
+                      onChange={fileValidation}
+                      />
+                    By Excel
+                  </MenuItem>
+                </StyleMenu>
+              </div>} />
               <Divider />
               <CardContent>
                 <TableContainer component={Paper}>
