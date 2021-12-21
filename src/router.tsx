@@ -38,6 +38,7 @@ const Brand = Loader(lazy(() => import('src/content/pages/Components/MasterData/
 const Bank = Loader(lazy(() => import('src/content/pages/Components/MasterData/Bank')));
 const Article = Loader(lazy(() => import('src/content/pages/Components/MasterData/Article')));
 const Discuss = Loader(lazy(() => import('src/content/pages/Components/MasterData/Discuss')));
+const Color = Loader(lazy(() => import('src/content/pages/Components/MasterData/Color')))
 
 // Master Data Area
 
@@ -47,7 +48,7 @@ const City = Loader(lazy(() => import('src/content/pages/Components/MasterData/A
 // Master Data Product
 
 const MasterProduct = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Master')))
-const Color = Loader(lazy(() => import('src/content/pages/Components/MasterData/Color')))
+const ProductColor = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Color')))
 const Tenor = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Tenor')))
 
 
@@ -213,7 +214,7 @@ const routes: PartialRouteObject[] = [
               },
               {
                 path: '/color',
-                element: <Color />
+                element: <ProductColor />
               },
               {
                 path: '/tenor',

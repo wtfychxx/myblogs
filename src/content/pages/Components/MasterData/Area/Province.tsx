@@ -45,6 +45,8 @@ function Province() {
       setMessage('Maaf, belum ada data')
       if(result.data !== null){
         setTableData(result.data)
+      }else{
+        setTableData([])
       }
     }
   }
@@ -148,7 +150,11 @@ function Province() {
                           </TableRow>
                         )
                       })
-                      : null
+                      : (
+                        <TableRow>
+                          <TableCell colSpan={2}>{message}</TableCell>
+                        </TableRow>
+                      )
                     }
                     </TableBody>
                   </Table>

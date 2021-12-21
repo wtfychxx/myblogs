@@ -54,6 +54,8 @@ function Brand() {
       setMessage('Maaf, belum ada data')
       if(result.data !== null){
         setTableData(result.data)
+      }else{
+        setTableData([])
       }
     }
   }
@@ -190,13 +192,21 @@ function Brand() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {tableData.map((row) => (
-                        <TableRow key={row.id}>
-                          <TableCell><Button variant="text" onClick={() => handleClickOpen(row.id)}>{row.name}</Button></TableCell>
-                          <TableCell>{row.CategoryName}</TableCell>
-                          <TableCell><Button variant="text" color="error" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
+                      {
+                        tableData.length ? (
+                          tableData.map((row) => (
+                            <TableRow key={row.id}>
+                              <TableCell><Button variant="text" onClick={() => handleClickOpen(row.id)}>{row.name}</Button></TableCell>
+                              <TableCell>{row.CategoryName}</TableCell>
+                              <TableCell><Button variant="text" color="error" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
+                            </TableRow>
+                          ))   
+                        ) : (
+                        <TableRow>
+                          <TableCell colSpan={3}>{message}</TableCell>
                         </TableRow>
-                      ))}
+                        )
+                      }
                     </TableBody>
                   </Table>
                 </TableContainer>

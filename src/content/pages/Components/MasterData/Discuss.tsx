@@ -135,79 +135,79 @@ function Discuss(){
                 alignItems="stretch"
                 spacing={3}
                 >
-                <Grid item xs={12}>
-                    <Card>
-                    <CardHeader title="Discuss List" action={<AddButton />} />
-                    <Divider />
-                    <CardContent>
-                        <TableContainer component={Paper}>
-                        <Table aria-label="Discuss table">
-                            <TableHead>
-                            <TableRow>
-                                <TableCell> Title </TableCell>
-                                <TableCell> Created </TableCell>
-                                <TableCell> Creator </TableCell>
-                                <TableCell> Tags </TableCell>
-                                <TableCell> Likes </TableCell>
-                            </TableRow>
-                            </TableHead>
-                            <TableBody>
-                            {
-                            (tableData.length) ? tableData.map((entry, i) => {
-                                return(
-                                <TableRow key={i}>
-                                    <TableCell><Button variant="text" onClick={() => handleClickOpen(entry.id)}>{entry.title}</Button></TableCell>
-                                    <TableCell>{entry.created}</TableCell>
-                                    <TableCell>{entry.creator}</TableCell>
-                                    <TableCell>{entry.tags}</TableCell>
-                                    <TableCell>{entry.likes}</TableCell>
-                                    <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
-                                </TableRow>
-                                )
-                            })
-                            : <TableRow>
-                                <TableCell colSpan={2}>{message}</TableCell>
-                            </TableRow>
-                            }
-                            </TableBody>
-                        </Table>
-                        </TableContainer>
-                    </CardContent>
-                    </Card>
-                </Grid>
+                    <Grid item xs={12}>
+                        <Card>
+                            <CardHeader title="Discuss List" action={<AddButton />} />
+                            <Divider />
+                            <CardContent>
+                                <TableContainer component={Paper}>
+                                    <Table aria-label="Discuss table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell> Title </TableCell>
+                                                <TableCell> Created </TableCell>
+                                                <TableCell> Creator </TableCell>
+                                                <TableCell> Tags </TableCell>
+                                                <TableCell> Likes </TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                        {
+                                        (tableData.length) ? tableData.map((entry, i) => {
+                                            return(
+                                            <TableRow key={i}>
+                                                <TableCell><Button variant="text" onClick={() => handleClickOpen(entry.id)}>{entry.title}</Button></TableCell>
+                                                <TableCell>{entry.created}</TableCell>
+                                                <TableCell>{entry.creator}</TableCell>
+                                                <TableCell>{entry.tags}</TableCell>
+                                                <TableCell>{entry.likes}</TableCell>
+                                                <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
+                                            </TableRow>
+                                            )
+                                        })
+                                        : <TableRow>
+                                            <TableCell colSpan={2}>{message}</TableCell>
+                                        </TableRow>
+                                        }
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </CardContent>
+                        </Card>
+                    </Grid>
                 </Grid>
                 <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" style={{ zIndex: 7 }}>
-                <DialogTitle> Discuss Form </DialogTitle>
-                <Box
-                    component="form"
-                    sx={{ '& .MuiTextField-root': { mt: 2, width: 1 } }}
-                    noValidate
-                    autoComplete="off"
-                    onSubmit={handleSubmit(onSubmit)}>
-                    <DialogContent>
-                    <input
-                    type="hidden"
-                    {...register("id")}
-                    />
+                    <DialogTitle> Discuss Form </DialogTitle>
+                    <Box
+                        component="form"
+                        sx={{ '& .MuiTextField-root': { mt: 2, width: 1 } }}
+                        noValidate
+                        autoComplete="off"
+                        onSubmit={handleSubmit(onSubmit)}>
+                        <DialogContent>
+                        <input
+                        type="hidden"
+                        {...register("id")}
+                        />
 
 
-                    <TextField
-                        margin="dense"
-                        label="Content"
-                        type="text"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        {...register("content", {required: { value: true, message: "Content is required!" }})}
-                        helperText={(errors.content) ? errors.content.message : ''}
-                    />
+                        <TextField
+                            margin="dense"
+                            label="Content"
+                            type="text"
+                            fullWidth
+                            multiline
+                            rows={4}
+                            {...register("content", {required: { value: true, message: "Content is required!" }})}
+                            helperText={(errors.content) ? errors.content.message : ''}
+                        />
 
-                    </DialogContent>
-                    <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit" variant="contained">Save</Button>
-                    </DialogActions>
-                </Box>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Cancel</Button>
+                            <Button type="submit" variant="contained">Save</Button>
+                        </DialogActions>
+                    </Box>
                 </Dialog>
             </Container>
             <Footer />

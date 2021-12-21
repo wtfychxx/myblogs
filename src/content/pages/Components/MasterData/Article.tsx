@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import PageTitle from 'src/components/PageTitle'
 import PageTitleWrapper from 'src/components/PageTitleWrapper'
 import Swal from 'sweetalert2'
-import { Container, Grid, Card, CardHeader, CardContent, Divider, Box, Paper} from '@material-ui/core';
+import { Container, Grid, Card, CardHeader, CardContent, Box, Paper, experimentalStyled} from '@material-ui/core';
 import CardMedia from '@material-ui/core/CardMedia'
 import CardActions from '@material-ui/core/CardActions'
 import Footer from 'src/components/Footer'
@@ -19,26 +19,33 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { detail, list, insert, deleteData } from 'src/api/masterData'
 import { useTheme } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
+import moment from 'moment'
+import Stack from '@material-ui/core/Stack'
+import { styled } from '@material-ui/core/styles'
 
 type Inputs = {
   id: number,
   title: string,
   content: string,
-  created: Date,
-  creator: number,
   tags: string[],
-  likes: number
 }
 
 export interface SideProps{
   tableData: string[]
 }
 
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary
+}))
+
 function Article() {
   const [open, setOpen] = useState(false)
   const [tableData, setTableData] = useState([])
   const [message, setMessage] = useState('')
-  const { register, handleSubmit, setValue, formState: { errors }, getValues } = useForm<Inputs>({
+  const { register, handleSubmit, setValue, formState: { errors }, getValues, reset } = useForm<Inputs>({
     defaultValues: {
       tags: []
     }
@@ -47,7 +54,7 @@ function Article() {
   const theme = useTheme()
 
   const getData = async () => {
-    const result = await list('articles')
+    const result = await list('article')
 
     setTableData([
       {
@@ -61,9 +68,11 @@ function Article() {
       }
     ])
     if(result){
-      setMessage(result.message)
+      setMessage("Maaf belum ada artikel")
       if(result.data !== null){
         setTableData(result.data)
+      }else{
+        setTableData([])
       }
     }
   }
@@ -73,18 +82,19 @@ function Article() {
   },[])
 
   const handleClickOpen = async (id: number = 0) => {
-    setOpen(true)
+    reset()
+    setValue('id', id)
 
-    setValue("id", id)
-    setValue("title", "")
-    
     if(id > 0){
-      const result = await detail('articles', id)
+      const result = await detail('article', id)
       
       if(result.code === 200){
         setValue("title", result.data.title)
+        setValue("content", result.data.content)
       }
     }
+
+    setOpen(true)
   }
 
   const handleClose = () => {
@@ -100,7 +110,7 @@ function Article() {
           confirmButtonText: 'Do it!'
       }).then(async (result) => {
           if(result.value){
-            const result = await deleteData('articles', id)
+            const result = await deleteData('article', id)
 
             if(result.code === 200){
               Swal.fire({
@@ -115,7 +125,8 @@ function Article() {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const endpoint = (data.id === 0) ? `articles` : `articles/${data.id}`
+    const endpoint = (data.id === 0) ? `article` : `article/${data.id}`
+
     const result = await insert(endpoint, data)
 
     if(result.code === 200){
@@ -140,12 +151,12 @@ function Article() {
     )
   }
 
-  const handleAddition = (tags) => {
-    const tagsValue = getValues("tags")
+  // const handleAddition = (tags) => {
+  //   const tagsValue = getValues("tags")
 
-    setValue("tags", [...tagsValue, tags])
-    console.log(getValues("tags"))
-  }
+  //   setValue("tags", [...tagsValue, tags])
+  //   console.log(getValues("tags"))
+  // }
 
   const keyCodes = {
     comma: 188,
@@ -183,23 +194,36 @@ function Article() {
               <CardHeader title="Article List" action={<AddButton />} />
               <CardContent>
                 <Grid container spacing={4}>
-                  {tableData.map((entry, i) => {
-                    return(
-                    <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
-                      <Card>
-                        <CardHeader title={<Link href="#" underline="none" onClick={() => handleClickOpen(entry.id)}>{entry.title}</Link>} action={<CloseIcon sx={{ cursor: 'pointer' }}  onClick={() => handleDelete(entry.id)} />} />
-                        <CardContent>
-                          <Typography gutterBottom variant="body2" color="text.secondary">
-                            {entry.content.split(/\s+/, 20).join(" ")}
-                          </Typography>
-                          <Typography variant="h5" component="div" sx={{ color: theme.colors.primary.main }}>
-                            {entry.creator} - {entry.created}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </Grid>
+                  {(tableData.length) ?
+                    tableData.map((entry, i) => {
+                      return(
+                      <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+                        <Card>
+                          <CardHeader title={<Link href="#" underline="none" onClick={() => handleClickOpen(entry.id)}>{entry.title}</Link>} action={<CloseIcon sx={{ cursor: 'pointer' }}  onClick={() => handleDelete(entry.id)} />} />
+                          <CardContent>
+                            <Typography gutterBottom variant="body2" color="text.secondary">
+                              {entry.content.split(/\s+/, 20).join(" ")}
+                            </Typography>
+                            <Typography variant="h5" component="div" sx={{ color: theme.colors.primary.main }}>
+                              {moment(entry.created).format('YYYY-MM-DD')}
+                            </Typography>
+                            <Stack direction="row" spacing={2}>
+                              {typeof entry.tags !== 'undefined' && entry.tags.split(',').map((key, i) => {
+                                return(
+                                  <Item>{key}</Item>
+                                )
+                              })}
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                      )
+                    }) : (
+                      <Grid item xs={12}>
+                        <Typography>{message}</Typography>
+                      </Grid>
                     )
-                  })}
+                  }
                 </Grid>
               </CardContent>
             </Card>
@@ -241,7 +265,7 @@ function Article() {
               />
 
               <TextField
-                label="Content"
+                label="tags"
                 type="text"
                 fullWidth
                 {...register("tags")}

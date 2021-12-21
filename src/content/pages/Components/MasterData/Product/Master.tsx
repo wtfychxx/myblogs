@@ -123,8 +123,10 @@ function Master() {
 
     if (result) {
       setMessage("Maaf, belum ada data")
-      if (result.data.length) {
+      if (result.data !== null) {
         setTableData(result.data)
+      }else{
+        setTableData([])
       }
     }
   }

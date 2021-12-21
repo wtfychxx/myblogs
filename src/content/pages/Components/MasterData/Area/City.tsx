@@ -64,6 +64,8 @@ function City() {
       setMessage("Maaf, belum ada data");
       if (result.data !== null) {
         setTableData(result.data);
+      }else{
+        setTableData([])
       }
     }
   };
@@ -197,7 +199,12 @@ function City() {
                               </TableRow>
                             );
                           })
-                        : null}
+                        : (
+                          <TableRow>
+                            <TableCell colSpan={3}>{message}</TableCell>
+                          </TableRow>
+                        )
+                        }
                     </TableBody>
                   </Table>
                 </TableContainer>

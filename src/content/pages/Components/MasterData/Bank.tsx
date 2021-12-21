@@ -47,6 +47,8 @@ function Bank() {
       setMessage('Maaf, belum ada data')
       if(result.data !== null){
         setTableData(result.data)
+      }else{
+        setTableData([])
       }
     }
   }
@@ -171,7 +173,9 @@ function Bank() {
                           </TableRow>
                         )
                       })
-                      : null
+                      : <TableRow>
+                          <TableCell colSpan={5}>{message}</TableCell>
+                        </TableRow>
                     }
                     </TableBody>
                   </Table>
