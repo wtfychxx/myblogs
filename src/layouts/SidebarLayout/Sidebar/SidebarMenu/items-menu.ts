@@ -73,9 +73,25 @@ const menuItems: MenuItems[] = [
                   link: '/management/masterdata/product/tenor'
                 },
                 {
-                  name: 'Lokasi',
-                  link: '/management/masterdata/product/location'
+                  name: 'Tipe',
+                  link: '/management/masterdata/product/type'
                 },
+                {
+                  name: 'Spesifikasi',
+                  link: '/management/masterdata/product/spesification'
+                },
+                {
+                  name: 'Promo',
+                  link: '/management/masterdata/product/promo'
+                },
+                {
+                  name: 'Problem',
+                  link: '/management/masterdata/product/problem'
+                },
+                {
+                  name: 'Problem Answer',
+                  link: '/management/masterdata/product/problemAnswer'
+                }
               ]
             },
             {

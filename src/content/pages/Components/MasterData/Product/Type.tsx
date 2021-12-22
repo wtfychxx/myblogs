@@ -39,7 +39,7 @@ type Inputs = {
     name: string
 }
 
-function type(){
+function ProductType(){
     const [open, setOpen] = useState(false)
     const [tableData, setTableData] = useState([])
     const [message, setMessage] = useState('')
@@ -188,11 +188,36 @@ function type(){
                 </Grid>
 
                 <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" style={{ zIndex: 7 }}>
+                    <DialogTitle> Product Type Form </DialogTitle>
+                    <Box
+                        component="form"
+                        sx={{ '& .MuiTextField-root': { mt: 2, width: 1 } }}
+                        noValidate
+                        autoComplete="off"
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
+                        <DialogContent>
+                            <input type="hidden" {...register("id")} />
 
+                            <TextField
+                                margin="dense"
+                                label="Name"
+                                type="text"
+                                fullWidth
+                                variant="outlined"
+                                {...register("name", { required: { value: true, message: "Name is required!"} })}
+                                helperText={errors.name && errors.name.message}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Cancel</Button>
+                            <Button variant="contained" type="submit"> Save </Button>
+                        </DialogActions>
+                    </Box>
                 </Dialog>
             </Container>
         </>
     )
 }
 
-export default type
+export default ProductType
