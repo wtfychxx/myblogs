@@ -53,6 +53,9 @@ const Type = Loader(lazy(() => import('src/content/pages/Components/MasterData/P
 const Tenor = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Tenor')))
 const Spesification = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Spesification')))
 
+const Promo = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Promo')))
+const Problem = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Problem')))
+
 
 const routes: PartialRouteObject[] = [
   {
@@ -229,6 +232,14 @@ const routes: PartialRouteObject[] = [
               {
                 path: '/spesification',
                 element: <Spesification />
+              },
+              {
+                path: '/promo',
+                element: <Promo />
+              },
+              {
+                path: '/problem',
+                element: <Problem />
               },
             ]
           },

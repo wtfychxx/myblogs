@@ -20,23 +20,25 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
 import TextField from '@material-ui/core/TextField'
-import MenuItem from '@material-ui/core/MenuItem'
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider'
+import DatePicker from '@material-ui/lab/DatePicker'
 import Box from '@material-ui/core/Box'
 import { useTheme } from '@material-ui/core'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { detail, list, insert, deleteData } from 'src/api/masterData';
 import numeral, { reset } from 'numeral'
-import ReactHookFormSelect from 'src/components/ReactHookFormSelect'
+import moment from 'moment'
 
 type Inputs = {
   id: number,
-  productColorId: number,
-  downPaymentAmount: number,
-  monthlyAmount: number,
-  duration: number
+  title: string,
+  description: string,
+  validUntilDate: Date,
+  validUntil: string
 }
 
-function Tenor() {
+function Promo() {
 
   const [open, setOpen] = useState(false)
   const [tableData, setTableData] = useState([])
@@ -46,7 +48,7 @@ function Tenor() {
   const { register, handleSubmit, setValue, control, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
-    const result = await list('tenor')
+    const result = await list('promo')
 
     if(result){
       setMessage(result.message)
@@ -55,14 +57,6 @@ function Tenor() {
       }else{
         setTableData([])
       }
-    }
-  }
-
-  async function getProductColor(){
-    const result = await list('productColour')
-
-    if(result.data !== null && result.data.length){
-      setProductColor(result.data)
     }
   }
 
@@ -75,13 +69,12 @@ function Tenor() {
     setValue("id", id)
 
     if(id > 0){
-      const result = await detail('tenor', id)
+      const result = await detail('promo', id)
 
       if(result.code === 200){
-        setValue('productColorId', result.data.productColorId)
-        setValue('downPaymentAmount', result.data.downPaymentAmount)
-        setValue('monthlyAmount', result.data.monthlyAmount)
-        setValue('duration', result.data.duration)
+        setValue('title', result.data.title)
+        setValue('description', result.data.description)
+        setValue('validUntil', result.data.validUntil)
       }
     }
 
@@ -101,7 +94,7 @@ function Tenor() {
         confirmButtonText: 'Do it!'
     }).then(async (result) => {
         if(result.value){
-          const result = await deleteData('tenor', id)
+          const result = await deleteData('promo', id)
 
           if(result.code === 200){
             Swal.fire({
@@ -113,25 +106,26 @@ function Tenor() {
           }
         }
     });
-  }
+}
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const endpoint = (data.id === 0) ? `tenor` : `tenor/${data.id}`
+    data.validUntil = moment(data.validUntilDate).format('YYYY-MM-DD')
+    const endpoint = (data.id === 0) ? `promo` : `promo/${data.id}`
     const result = await insert(endpoint, data)
 
     if(result.code === 200){
-      Swal.fire({
-        icon: 'success',
-        title: result.message
-      }).then(() => {
-        setOpen(false)
-        getData()
-      })
+        Swal.fire({
+            icon: 'success',
+            title: result.message
+        }).then(() => {
+            setOpen(false)
+            getData()
+        })
     }else{
-      Swal.fire({
-        icon: 'warning',
-        title: result.message
-      })
+        Swal.fire({
+            icon: 'warning',
+            title: result.message
+        })
     }
   }
 
@@ -144,11 +138,11 @@ function Tenor() {
   return (
     <>
       <Helmet>
-        <title>Tenor</title>
+        <title>Promo</title>
       </Helmet>
       <PageTitleWrapper>
         <PageTitle
-          heading="Tenor"
+          heading="Promo"
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -161,29 +155,27 @@ function Tenor() {
         >
           <Grid item xs={12}>
             <Card>
-              <CardHeader title="Tenor List" action={<AddButton />} />
+              <CardHeader title="Promo List" action={<AddButton />} />
               <Divider />
               <CardContent>
                 <TableContainer component={Paper}>
-                  <Table aria-label="Tenor table">
+                  <Table aria-label="Promo table">
                     <TableHead>
                       <TableRow>
-                        <TableCell> Product </TableCell>
-                        <TableCell> Down Payment Amount </TableCell>
-                        <TableCell> Monthly Amount </TableCell>
-                        <TableCell> Duration </TableCell>
+                        <TableCell> Title </TableCell>
+                        <TableCell> Description </TableCell>
+                        <TableCell> Valid Until </TableCell>
                         <TableCell> </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {
-                        (tableData.length) ? tableData.map((row) => (
-                          <TableRow key={row.id}>
-                            <TableCell><Link href="#" underline="none" onClick={() => handleClickOpen(row.id)}>{row.productName}</Link></TableCell>
-                            <TableCell>{row.downPaymentAmount}</TableCell>
-                            <TableCell>{row.monthlyAmount}</TableCell>
-                            <TableCell>{row.duration}</TableCell>
-                            <TableCell><Button variant="text" color="error" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
+                        (tableData.length) ? tableData.map((entry, i) => (
+                          <TableRow key={i}>
+                            <TableCell><Link href="#" underline="none" onClick={() => handleClickOpen(entry.id)}>{entry.title}</Link></TableCell>
+                            <TableCell>{entry.description}</TableCell>
+                            <TableCell>{entry.validUntil}</TableCell>
+                            <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
                           </TableRow>
                         )) : <TableRow>
                           <TableCell colSpan={5}>{message}</TableCell>
@@ -197,7 +189,7 @@ function Tenor() {
           </Grid>
         </Grid>
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" style={{ zIndex: 7 }}>
-          <DialogTitle> Tenor Form </DialogTitle>
+          <DialogTitle> Promo Form </DialogTitle>
           <Box
             component="form"
             sx={{ '& .MuiTextField-root': { mt: 2, width: 1, zIndex: '7 !important' } }}
@@ -207,52 +199,45 @@ function Tenor() {
                 type="hidden"
                 {...register("id")}
               />
-              <ReactHookFormSelect
-                control={control}
-                name="productColorId"
-                id="productColorId"
-                label="Product Color"
-                defaultValue={''}
-                rules={{ required: { value: true, message: "Product Color is required!" } }}
-                >
-                  {productColor.map((entry, i) => {
-                    return(
-                      <MenuItem key={i} value={entry.id}>{entry.name}</MenuItem>
-                    )
-                  })}
-              </ReactHookFormSelect>
-              {errors.productColorId && <Typography variant="subtitle1">{errors.productColorId.message}</Typography>}
 
               <TextField
                 autoFocus
                 margin="dense"
-                id="downPaymentAmount"
+                id="title"
                 label="Down Payment Amount"
                 type="Text"
                 fullWidth
-                {...register("downPaymentAmount", { required: { value: true, message: "Down payment amount is required!" }, pattern: { value: /^[0-9]+$/i, message: "Please input only numbers!" } })}
-                helperText={(errors.downPaymentAmount) ? errors.downPaymentAmount.message : ''}
+                {...register("title", { required: { value: true, message: "Title is required!" }})}
+                helperText={(errors.title) ? errors.title.message : ''}
               />
 
               <TextField
+                autoFocus
                 margin="dense"
-                id="monthlyAmount"
-                label="Monthly Amount"
+                id="title"
+                label="Description"
                 type="Text"
                 fullWidth
-                {...register("monthlyAmount", { required: { value: true, message: "Monthly Amount is required!" }, pattern: { value: /^[0-9]+$/i, message: "Please input only numbers!" } })}
-                helperText={(errors.monthlyAmount) ? errors.monthlyAmount.message : ''}
+                multiline
+                rows={4}
+                {...register("description")}
+                helperText={(errors.description) ? errors.description.message : ''}
               />
 
-              <TextField
-                margin="dense"
-                id="duration"
-                label="Duration"
-                type="Text"
-                fullWidth
-                {...register("duration", { required: { value: true, message: "Duration is required!" }, pattern: { value: /^[0-9]+$/i, message: "Please input only numbers!" } })}
-                helperText={(errors.duration) ? errors.duration.message : ''}
-              />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Controller
+                    name="validUntilDate"
+                    control={control}
+                    render={({field: {onChange, value}}) => (
+                        <DatePicker
+                            onChange={onChange}
+                            value={value}
+                            label="Valid Until"
+                            renderInput={(params) => <TextField {...params} />}
+                        />
+                    )}
+                  />
+              </LocalizationProvider>
 
             </DialogContent>
             <DialogActions>
@@ -267,4 +252,4 @@ function Tenor() {
   );
 }
 
-export default Tenor;
+export default Promo;
