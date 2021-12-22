@@ -87,10 +87,6 @@ const menuItems: MenuItems[] = [
                 {
                   name: 'Problem',
                   link: '/management/masterdata/product/problem'
-                },
-                {
-                  name: 'Problem Answer',
-                  link: '/management/masterdata/product/problemAnswer'
                 }
               ]
             },
