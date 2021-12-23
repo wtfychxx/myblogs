@@ -112,10 +112,6 @@ const menuItems: MenuItems[] = [
           {
             name: 'Profile Details',
             link: '/management/profile/details'
-          },
-          {
-            name: 'User Settings',
-            link: '/management/profile/settings'
           }
         ]
       }

@@ -5,11 +5,6 @@ import Footer from 'src/components/Footer';
 import { Container, Grid } from '@material-ui/core';
 
 import ProfileCover from './ProfileCover';
-import RecentActivity from './RecentActivity';
-import Feed from './Feed';
-import PopularTags from './PopularTags';
-import MyCards from './MyCards';
-import Addresses from './Addresses';
 
 function ManagementUserProfile() {
 
@@ -46,23 +41,8 @@ function ManagementUserProfile() {
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={12} md={8}>
-            <ProfileCover user={user} />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <RecentActivity />
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <Feed />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <PopularTags />
-          </Grid>
-          <Grid item xs={12} md={7}>
-            <MyCards />
-          </Grid>
-          <Grid item xs={12} md={5}>
-            <Addresses />
+          <Grid item xs={12} md={12}>
+            <ProfileCover user={userData} />
           </Grid>
         </Grid>
       </Container>

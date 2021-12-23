@@ -65,7 +65,7 @@ function HeaderUserbox() {
   const user =
   {
     name: 'Catherine Pike',
-    avatar: '/static/images/avatars/1.jpg',
+    avatar: '/static/images/avatars/4.jpg',
     jobtitle: 'Project Manager'
   };
 

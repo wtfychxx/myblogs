@@ -11,10 +11,9 @@ import {
 } from '@material-ui/core';
 import { experimentalStyled } from '@material-ui/core/styles';
 
+import PhoneTwoTone from '@material-ui/icons/PhoneTwoTone';
 import ArrowBackTwoToneIcon from '@material-ui/icons/ArrowBackTwoTone';
-import ArrowForwardTwoToneIcon from '@material-ui/icons/ArrowForwardTwoTone';
 import UploadTwoToneIcon from '@material-ui/icons/UploadTwoTone';
-import MoreHorizTwoToneIcon from '@material-ui/icons/MoreHorizTwoTone';
 
 const Input = experimentalStyled('input')({
   display: 'none'
@@ -99,22 +98,13 @@ const ProfileCover = ({ user }) => {
         </Box>
       </Box>
       <CardCover>
-        <CardMedia image={user.coverImg} />
+        <CardMedia image='/static/images/placeholders/covers/5.jpg' />
         <CardCoverAction>
           <Input accept="image/*" id="change-cover" multiple type="file" />
-          <label htmlFor="change-cover">
-            <Button
-              startIcon={<UploadTwoToneIcon />}
-              variant="contained"
-              component="span"
-            >
-              Change cover
-            </Button>
-          </label>
         </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        <Avatar variant="rounded" alt={user.name} src='/static/images/avatars/4.jpg' />
         <ButtonUploadWrapper>
           <Input
             accept="image/*"
@@ -133,38 +123,10 @@ const ProfileCover = ({ user }) => {
         <Typography gutterBottom variant="h4">
           {user.name}
         </Typography>
-        <Typography variant="subtitle2">{user.description}</Typography>
+        <Typography variant="subtitle2">{user.email}</Typography>
         <Typography sx={{ py: 2 }} variant="subtitle2" color="text.primary">
-          {user.jobtitle} | {user.location} | {user.followers} followers
+          <PhoneTwoTone sx={{ position: 'relative', top: '7px' }} /> {user.phoneNumber} | {user.city} | {user.province}
         </Typography>
-        <Box
-          display={{ xs: 'block', md: 'flex' }}
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Box>
-            <Button size="small" variant="contained">
-              Follow
-            </Button>
-            <Button size="small" sx={{ mx: 1 }} variant="outlined">
-              View website
-            </Button>
-            <IconButton color="primary" sx={{ p: 0.5 }}>
-              <MoreHorizTwoToneIcon />
-            </IconButton>
-          </Box>
-          <Button
-            sx={{ mt: { xs: 2, md: 0 } }}
-            size="small"
-            variant="text"
-            endIcon={<ArrowForwardTwoToneIcon />}
-          >
-            See all {' '}
-            {user.followers}
-            {' '}
-            connections
-          </Button>
-        </Box>
       </Box>
     </>
   );
