@@ -88,9 +88,11 @@ function Problem(){
                 setProblemDescription(resultProblem.data.value)
                 
                 const resultProblemAnswer = await detail('problemAnswer', id)
-                if(resultProblemAnswer.data !== null){
-                    setValue('id', id)
-                    setValue('value', resultProblemAnswer.data.value)
+                if(resultProblemAnswer){
+                    if(resultProblemAnswer.data !== null){
+                        setValue('id', id)
+                        setValue('value', resultProblemAnswer.data.value)
+                    }
                 }
             }
         }
@@ -113,7 +115,7 @@ function Problem(){
             confirmButtonText: 'Do it!'
         }).then(async (result) => {
             if(result.value){
-                const result = await deleteData('tenor', id)
+                const result = await deleteData('problemAnswer', id)
 
                 if(result.code === 200){
                 Swal.fire({
@@ -128,7 +130,23 @@ function Problem(){
     }
 
     const onSubmit: SubmitHandler<Inputs> = async(data) => {
-        
+        const endpoint = (data.id === 0) ? `problemAnswer` : `problemAnswer${data.id}`
+        const result = await insert(endpoint, data)
+
+        if(result.code === 200){
+            Swal.fire({
+                icon: 'success',
+                title: result.message
+            }).then(() => {
+                setOpen(false)
+                getData()
+            })
+        }else{
+            Swal.fire({
+                icon: 'warning',
+                title: result.message
+            })
+        }
     }
 
     return(

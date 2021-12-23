@@ -56,6 +56,8 @@ const Spesification = Loader(lazy(() => import('src/content/pages/Components/Mas
 const Promo = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Promo')))
 const Problem = Loader(lazy(() => import('src/content/pages/Components/MasterData/Product/Problem')))
 
+const Profile = Loader(lazy(() => import('src/content/pages/Users/profile')))
+
 
 const routes: PartialRouteObject[] = [
   {
@@ -275,7 +277,7 @@ const routes: PartialRouteObject[] = [
           },
           {
             path: '/details',
-            element: <Category />
+            element: <Profile />
           },
           {
             path: '/settings',

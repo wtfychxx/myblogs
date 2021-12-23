@@ -38,7 +38,8 @@ const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
-  color: theme.palette.text.secondary
+  color: theme.colors.alpha.white[100],
+  background: theme.colors.primary.main
 }))
 
 function Article() {
@@ -91,6 +92,7 @@ function Article() {
       if(result.code === 200){
         setValue("title", result.data.title)
         setValue("content", result.data.content)
+        setValue("tags", result.data.tags)
       }
     }
 
@@ -207,10 +209,10 @@ function Article() {
                             <Typography variant="h5" component="div" sx={{ color: theme.colors.primary.main }}>
                               {moment(entry.created).format('YYYY-MM-DD')}
                             </Typography>
-                            <Stack direction="row" spacing={2}>
+                            <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
                               {typeof entry.tags !== 'undefined' && entry.tags.split(',').map((key, i) => {
                                 return(
-                                  <Item>{key}</Item>
+                                  <Item key={i}>{key}</Item>
                                 )
                               })}
                             </Stack>

@@ -101,10 +101,6 @@ const menuItems: MenuItems[] = [
             {
               name: 'Review',
               link: '/management/masterdata/review'
-            },
-            {
-              name: 'Balasan Diskusi',
-              link: '/management/masterdata/feedback'
             }
         ]
       },

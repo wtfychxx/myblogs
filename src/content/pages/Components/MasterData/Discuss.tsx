@@ -26,6 +26,7 @@ import PageTitle from 'src/components/PageTitle';
 
 type Inputs = {
     id: number,
+    discussId: number,
     user_id: number,
     content: string,
     created: Date
@@ -35,7 +36,8 @@ function Discuss(){
     const [open, setOpen] = useState(false)
     const [tableData, setTableData] = useState([])
     const [message, setMessage] = useState('')
-    const { register, handleSubmit, setValue, formState: { errors }, getValues } = useForm<Inputs>()
+    const [contentDiscuss, setContentDiscuss] = useState('')
+    const { register, handleSubmit, setValue, reset, formState: { errors }, getValues } = useForm<Inputs>()
 
     const getData = async () => {
         const result = await list('discuss')
@@ -53,11 +55,21 @@ function Discuss(){
     }, [])
 
     const handleClickOpen = async (id: number = 0) => {
-        if(id > 0){
-            const result = await detail('discuss', id)
+        reset()
+        setValue('discussId', id)
 
-            if(result.code === 200){
-                setValue("content", result.data.content)
+        if(id > 0){
+            const resultDiscuss = await detail('discuss', id)
+
+            if(resultDiscuss.code === 200){
+                setContentDiscuss(resultDiscuss.data.content)
+                
+                const resultReplied = await detail('repliedDiscuss', id)
+                if(resultReplied){
+                    if(resultReplied.data !== null){
+                        setValue("content", resultReplied.data.content)
+                    }
+                }
             }
         }
 
@@ -77,7 +89,7 @@ function Discuss(){
             confirmButtonText: 'Do it!'
         }).then(async (result) => {
             if(result.value){
-              const result = await deleteData('category', id)
+              const result = await deleteData('discussReplied', id)
   
               if(result.code === 200){
                 Swal.fire({
@@ -92,7 +104,7 @@ function Discuss(){
     }
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        const endpoint = (data.id === 0) ? `category` : `category/${data.id}`
+        const endpoint = (data.id === 0) ? `discussReplied` : `discussReplied/${data.id}`
         const result = await insert(endpoint, {title: data.content})
 
         if(result.code === 200){
@@ -161,12 +173,11 @@ function Discuss(){
                                                 <TableCell>{entry.creator}</TableCell>
                                                 <TableCell>{entry.tags}</TableCell>
                                                 <TableCell>{entry.likes}</TableCell>
-                                                <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
                                             </TableRow>
                                             )
                                         })
                                         : <TableRow>
-                                            <TableCell colSpan={2}>{message}</TableCell>
+                                            <TableCell colSpan={5}>{message}</TableCell>
                                         </TableRow>
                                         }
                                         </TableBody>
@@ -185,22 +196,34 @@ function Discuss(){
                         autoComplete="off"
                         onSubmit={handleSubmit(onSubmit)}>
                         <DialogContent>
-                        <input
-                        type="hidden"
-                        {...register("id")}
-                        />
+                            <input
+                            type="hidden"
+                            {...register("id")}
+                            />
 
+                            <TextField
+                                margin="dense"
+                                label="Discuss Content"
+                                type="text"
+                                fullWidth
+                                multiline
+                                rows={4}
+                                value={contentDiscuss}
+                                inputProps={
+                                    { readonly: true }
+                                }
+                            />
 
-                        <TextField
-                            margin="dense"
-                            label="Content"
-                            type="text"
-                            fullWidth
-                            multiline
-                            rows={4}
-                            {...register("content", {required: { value: true, message: "Content is required!" }})}
-                            helperText={(errors.content) ? errors.content.message : ''}
-                        />
+                            <TextField
+                                margin="dense"
+                                label="Your Reply"
+                                type="text"
+                                fullWidth
+                                multiline
+                                rows={4}
+                                {...register("content", {required: { value: true, message: "Content is required!" }})}
+                                helperText={(errors.content) ? errors.content.message : ''}
+                            />
 
                         </DialogContent>
                         <DialogActions>
