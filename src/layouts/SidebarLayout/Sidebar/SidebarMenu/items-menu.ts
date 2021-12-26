@@ -121,9 +121,9 @@ const menuItems: MenuItems[] = [
     heading: 'Transaction',
     items: [
       {
-        name: 'Purchase',
+        name: 'Transaction',
         icon: ShoppingCartIcon,
-        link: '/components/buttons'
+        link: '/management/transactions'
       }
     ]
   }

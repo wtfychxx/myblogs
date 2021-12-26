@@ -58,6 +58,9 @@ const Problem = Loader(lazy(() => import('src/content/pages/Components/MasterDat
 
 const Profile = Loader(lazy(() => import('src/content/pages/Users/profile')))
 
+const Transactions = Loader(lazy(() => import('src/content/pages/Components/Transaction')))
+const TransactionDetail = Loader(lazy(() => import('src/content/pages/Components/Transaction/Detail')))
+
 
 const routes: PartialRouteObject[] = [
   {
@@ -284,6 +287,20 @@ const routes: PartialRouteObject[] = [
             element: <Category />
           },
         ]
+      }
+    ]
+  },
+  {
+    path: '/management/transactions',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: '/',
+        element: <Transactions />
+      },
+      {
+        path: '/:transactionId',
+        element: <TransactionDetail />
       }
     ]
   }

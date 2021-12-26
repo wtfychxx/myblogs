@@ -5,6 +5,7 @@ import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 
 import ThemeProvider from './theme/ThemeProvider';
 import { CssBaseline } from '@material-ui/core';
+// import './styles/global.scss'
 
 const App = () => {
 

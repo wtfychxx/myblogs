@@ -1977,6 +1977,11 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
+"@sweetalert2/theme-material-ui@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@sweetalert2/theme-material-ui/-/theme-material-ui-5.0.8.tgz#05ec748f211e8b89b75af8d492c1c97c5af72dac"
+  integrity sha512-ZD2WN7DCoY5vyGUXLKBbzNTHxT1M0p7WOsR5crXjeJXs7XJQJDKjhGNFRz6w21WLk5zJDUbT2Whv1cE/svTovA==
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.npmjs.org/@tootallnate/once/-/once-1.1.2.tgz"
