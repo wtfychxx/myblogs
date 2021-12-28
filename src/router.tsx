@@ -20,6 +20,8 @@ const Loader = (Component) => (props) => (
 const Login = Loader(lazy(() => import('src/content/pages/Components/Login')));
 const Register = Loader(lazy(() => import('src/content/pages/Components/Register')));
 
+const TransactionsUser = Loader(lazy(() => import('src/content/pages/Transaction')))
+
 // Dashboards
 
 const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
@@ -69,6 +71,10 @@ const routes: PartialRouteObject[] = [
     children: [
       {
         path: '/',
+        element: <TransactionsUser />
+      },
+      {
+        path: '/login',
         element: <Login />
       },
       {

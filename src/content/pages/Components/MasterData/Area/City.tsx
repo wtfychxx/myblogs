@@ -186,7 +186,7 @@ function City() {
                                     {entry.name}
                                   </Button>
                                 </TableCell>
-                                <TableCell>{entry.provinceId}</TableCell>
+                                <TableCell>{entry.provinceName}</TableCell>
                                 <TableCell>
                                   <Button
                                     variant="text"

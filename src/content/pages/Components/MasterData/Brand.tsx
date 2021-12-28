@@ -123,7 +123,7 @@ function Brand() {
       if(result.code === 200){
         setValue("id", id)
         setValue("name", result.data.name)
-        setValue("categoryId", result.data.CategoryId)
+        setValue("categoryId", result.data.categoryId)
       }
     }
 
@@ -197,7 +197,7 @@ function Brand() {
                           tableData.map((row) => (
                             <TableRow key={row.id}>
                               <TableCell><Button variant="text" onClick={() => handleClickOpen(row.id)}>{row.name}</Button></TableCell>
-                              <TableCell>{row.CategoryName}</TableCell>
+                              <TableCell>{row.categoryName}</TableCell>
                               <TableCell><Button variant="text" color="error" onClick={() => handleDelete(row.id)}> Delete </Button></TableCell>
                             </TableRow>
                           ))   

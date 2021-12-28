@@ -58,14 +58,6 @@ function Tenor() {
     }
   }
 
-  async function getProductColor(){
-    const result = await list('productColour')
-
-    if(result.data !== null && result.data.length){
-      setProductColor(result.data)
-    }
-  }
-
   useEffect(() => {
     getData()
   },[])

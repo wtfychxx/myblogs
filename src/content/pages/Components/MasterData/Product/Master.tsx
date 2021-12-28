@@ -46,8 +46,6 @@ type Inputs = {
   id: number
   name: string
   basePrice: number
-  discussId: number
-  reviewId: number
   description: string
   brandId: number
   cityId: number
@@ -92,6 +90,8 @@ function Master() {
   const [open, setOpen] = useState(false)
   const [tableData, setTableData] = useState([])
   const [message, setMessage] = useState("")
+  const [brand, setBrand] = useState([])
+  const [city, setCity] = useState([])
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openAnchor = Boolean(anchorEl);
 
@@ -131,8 +131,26 @@ function Master() {
     }
   }
 
+  async function getBrand(){
+    const results = await list('brand')
+
+    if(results.data !== null && results.data.length){
+      setBrand(results.data)
+    }
+  }
+
+  async function getCity(){
+    const results = await list('city')
+
+    if(results.data !== null && results.data.length){
+      setCity(results.data)
+    }
+  }
+
   useEffect(() => {
     getData()
+    getBrand()
+    getCity()
   }, [])
 
   const handleClickOpen = async (id: number = 0) => {
@@ -145,8 +163,6 @@ function Master() {
       if (result.code === 200) {
         setValue("name", result.data.name)
         setValue("basePrice", result.data.basePrice)
-        setValue("discussId", result.data.discussId)
-        setValue("reviewId", result.data.reviewId)
         setValue("description", result.data.description)
         setValue("brandId", result.data.brandId)
         setValue("cityId", result.data.cityId)
@@ -170,7 +186,7 @@ function Master() {
       confirmButtonText: "Do it!",
     }).then(async (result) => {
       if (result.value) {
-        const result = await deleteData("category", id)
+        const result = await deleteData("product", id)
 
         if (result.code === 200) {
           Swal.fire({
@@ -185,7 +201,7 @@ function Master() {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const endpoint = data.id === 0 ? `category` : `category/${data.id}`
+    const endpoint = data.id === 0 ? `product` : `product/${data.id}`
     const result = await insert(endpoint, data)
 
     if (result.code === 200) {
@@ -323,11 +339,9 @@ function Master() {
                       <TableRow>
                         <TableCell> Name </TableCell>
                         <TableCell> Base Price </TableCell>
-                        <TableCell> Discuss </TableCell>
-                        <TableCell> Review </TableCell>
-                        <TableCell> Description </TableCell>
                         <TableCell> Brand </TableCell>
                         <TableCell> City </TableCell>
+                        <TableCell> </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -343,6 +357,9 @@ function Master() {
                                   {entry.name}
                                 </Button>
                               </TableCell>
+                              <TableCell>{entry.basePrice}</TableCell>
+                              <TableCell>{entry.brandName}</TableCell>
+                              <TableCell>{entry.cityName}</TableCell>
                               <TableCell>
                                 <Button
                                   variant="text"
@@ -357,7 +374,7 @@ function Master() {
                         })
                       ) : (
                         <TableRow>
-                          <TableCell colSpan={2}>{message}</TableCell>
+                          <TableCell colSpan={5}>{message}</TableCell>
                         </TableRow>
                       )}
                     </TableBody>
@@ -407,30 +424,6 @@ function Master() {
                 })}
                 helperText={errors.basePrice ? errors.basePrice.message : ""} />
 
-              <ReactHookFormSelect
-                control={control}
-                name="discussId"
-                id="discussId"
-                label="Discuss"
-                defaultValue={''}
-                rules={{ required: { value: true, message: `Discuss is required!`} }}
-                >
-
-              </ReactHookFormSelect>
-              {errors.discussId ? <Typography sx={{ ml: 1 }} variant="subtitle1"> {errors.discussId.message} </Typography>: ''}
-
-              <ReactHookFormSelect
-                control={control}
-                name="reviewId"
-                id="reviewId"
-                label="Review"
-                defaultValue={''}
-                rules={{ required: { value: true, message: `Review is required!`} }}
-                >
-
-              </ReactHookFormSelect>
-              {errors.reviewId ? <Typography sx={{ ml: 1 }} variant="subtitle1"> {errors.reviewId.message} </Typography>: ''}
-
               <TextField
                 autoFocus
                 margin="dense"
@@ -449,7 +442,13 @@ function Master() {
                 defaultValue={''}
                 rules={{ required: { value: true, message: `Brand is required!`} }}
                 >
-
+                  {
+                    brand.map((entry, i) => {
+                      return(
+                        <MenuItem key={i} value={entry.id}>{entry.name}</MenuItem>
+                      )
+                    })
+                  }
               </ReactHookFormSelect>
               {errors.brandId ? <Typography sx={{ ml: 1 }} variant="subtitle1"> {errors.brandId.message} </Typography>: ''}
 
@@ -461,7 +460,13 @@ function Master() {
                 defaultValue={''}
                 rules={{ required: { value: true, message: `City is required!`} }}
                 >
-
+                  {
+                    city.map((entry, i) => {
+                      return(
+                        <MenuItem key={i} value={entry.id}>{entry.name}</MenuItem>
+                      )
+                    })
+                  }
               </ReactHookFormSelect>
               {errors.brandId ? <Typography sx={{ ml: 1 }} variant="subtitle1"> {errors.brandId.message} </Typography>: ''}
                 

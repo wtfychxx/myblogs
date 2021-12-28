@@ -33,6 +33,10 @@ function Transaction(){
 
     useEffect(() => {
         getData()
+        setTableData([{
+            id: 1,
+            product: "Test"
+        }])
     }, [])
     
     return(

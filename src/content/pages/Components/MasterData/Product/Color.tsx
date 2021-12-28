@@ -41,7 +41,6 @@ type Inputs = {
     image: string,
     colorId: number,
     fUseSpecialPrice: boolean,
-    addOnPrice: string,
     productId: number,
     fCashOnly: boolean
 }
@@ -56,7 +55,7 @@ function Color(){
     const { register, handleSubmit, setValue, reset, control, formState: { errors } } = useForm<Inputs>()
 
     const getData = async () => {
-        const result = await list('productColour')
+        const result = await list('productColor')
 
         if(result){
             setMessage("Maaf, belum ada data")
@@ -86,6 +85,7 @@ function Color(){
     useEffect(() => {
         getColor()
         getData()
+        getProduct()
     }, [])
 
     const handleClickOpen = async (id: number = 0) => {
@@ -93,12 +93,11 @@ function Color(){
         setValue('id', id)
 
         if(id > 0){
-            const result = await detail('productColour', id)
+            const result = await detail('productColor', id)
 
             if(result.code === 200){
                 setValue("colorId", result.data.colorId)
                 setValue("fUseSpecialPrice", result.data.fUseSpecialPrice)
-                setValue("addOnPrice", result.data.addOnPrice)
                 setValue("productId", result.data.productId)
                 setValue("fCashOnly", result.data.fCashOnly)
             }
@@ -211,7 +210,6 @@ function Color(){
                                             <TableRow>
                                                 <TableCell> Color </TableCell>
                                                 <TableCell> Use Special Price </TableCell>
-                                                <TableCell> Add On Price </TableCell>
                                                 <TableCell> Product </TableCell>
                                                 <TableCell> Cash Only </TableCell>
                                                 <TableCell> </TableCell>
@@ -224,7 +222,6 @@ function Color(){
                                                         <TableRow>
                                                             <TableCell><Button variant="text" onClick={() => handleClickOpen(entry.id)}>{entry.colorName}</Button></TableCell>
                                                             <TableCell>{entry.fUseSpecialPrice}</TableCell>
-                                                            <TableCell>{entry.addOnPrice}</TableCell>
                                                             <TableCell>{entry.productName}</TableCell>
                                                             <TableCell>{entry.fCashOnly}</TableCell>
                                                             <TableCell><Button variant="text" color="error" onClick={() => handleDelete(entry.id)}> Delete </Button></TableCell>
@@ -268,16 +265,6 @@ function Color(){
                             })}
                             </ReactHookFormSelect>
                             {errors.colorId && <Typography variant="subtitle1">{errors.colorId.message}</Typography>}
-
-                            <TextField
-                                margin="dense"
-                                label="Add on price"
-                                type="text"
-                                fullWidth
-                                variant="outlined"
-                                {...register("addOnPrice", { required: { value: true, message: "Add on price is required!"}, pattern: { value: /^[0-9]+$/i, message: "Please input only numbers!" } })}
-                                helperText={errors.addOnPrice && errors.addOnPrice.message}
-                            />
 
                             <ReactHookFormSelect
                                 control={control}
