@@ -22,7 +22,7 @@ import SearchAppBar from 'src/components/SearchAppBar'
 
 const MainContent = styled(Box)(
     ({ theme }) => `
-        margin-top: calc(${theme.header.height} - 20px)
+        margin-top: calc(${theme.header.height} - 15px)
     `
 )
 

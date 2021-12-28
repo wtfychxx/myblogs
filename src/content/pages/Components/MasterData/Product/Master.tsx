@@ -221,7 +221,8 @@ function Master() {
   }
 
   const fileValidation = async (e:any) => {
-    const isValid = imageValidation(e.target.files[0])
+    const isValid = true
+    
     const file = e.target.files[0]
 
     if(isValid){

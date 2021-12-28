@@ -74,6 +74,10 @@ const routes: PartialRouteObject[] = [
         element: <TransactionsUser />
       },
       {
+        path: '/product/:id',
+        element: <TransactionsUser />
+      },
+      {
         path: '/login',
         element: <Login />
       },

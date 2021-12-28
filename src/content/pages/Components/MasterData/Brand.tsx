@@ -30,11 +30,12 @@ import { imageValidation } from 'src/lib/imageValidation'
 import { detail, list, insert, deleteData, uploadImage } from 'src/api/masterData'
 import { Controller } from 'react-hook-form'
 import ReactHookFormSelect from 'src/components/ReactHookFormSelect'
+import { ImagesearchRoller, SettingsInputAntennaTwoTone } from '@material-ui/icons'
 
 type Inputs = {
   id: number,
   name: string,
-  photoUrl: any,
+  logoUrl: any,
   categoryId: number
 }
 
@@ -44,8 +45,9 @@ function Brand() {
   const [tableData, setTableData] = useState([])
   const [category, setCategory] = useState([])
   const [message, setMessage] = useState('')
+  const [imageString, setImageString] = useState('')
   const theme = useTheme()
-  const { register, handleSubmit, control, setValue, reset, formState: { errors } } = useForm<Inputs>()
+  const { register, handleSubmit, control, setValue, reset, getValues, formState: { errors } } = useForm<Inputs>()
 
   const getData = async () => {
     const result = await list('brand')
@@ -95,7 +97,10 @@ function Brand() {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const endpoint = (data.id === 0) ? `brand` : `brand/${data.id}`
+
+    data.logoUrl = imageString
     const result = await insert(endpoint, data)
+    
 
     if(result.code === 200){
       Swal.fire({
@@ -124,6 +129,7 @@ function Brand() {
         setValue("id", id)
         setValue("name", result.data.name)
         setValue("categoryId", result.data.categoryId)
+        setImageString(result.data.logoUrl)
       }
     }
 
@@ -140,22 +146,23 @@ function Brand() {
     )
   }
 
+  const handleInputChange = (file) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+
+    reader.onload = (e: any) => {
+      setImageString(e.target.result)
+    }
+  }
+
   const fileValidation = async (e:any) => {
-    const isValid = imageValidation(e.target.files[0])
+    const isValid: any = await imageValidation(e.target.files[0])
     const file = e.target.files[0]
 
     if(isValid){
-      const formData = new FormData()
-      formData.append('file', file)
-
-      const upload = await uploadImage(formData)
-
-      if(upload.status === 'success'){
-        Swal.fire({
-          icon: 'success',
-          title: upload.message
-        })
-      }
+      handleInputChange(file)
+      // setImageString([...imageString, isValid])
+      // setValue("logoUrl", isValid)
     }
   }
 
@@ -262,10 +269,16 @@ function Brand() {
                   <input
                     type="file"
                     hidden
-                    {...register("photoUrl")}
+                    {...register("logoUrl")}
                     onChange={fileValidation}
                     />
               </Button>
+
+              <img
+                src={imageString}
+                alt={`${getValues("name")}-image`}
+                loading="lazy"
+              />
             </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>

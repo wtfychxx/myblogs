@@ -111,6 +111,9 @@ function Bank() {
       Swal.fire({
         icon: 'success',
         title: result.message
+      }).then(() => {
+        getData()
+        setOpen(false)
       })
     }else{
       Swal.fire({
@@ -184,7 +187,7 @@ function Bank() {
             </Card>
           </Grid>
         </Grid>
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm" sx={{ zIndex: 7 }}>
           <DialogTitle> Bank Form </DialogTitle>
           <Box
             component="form"
@@ -210,13 +213,11 @@ function Bank() {
                 <TextField
                     autoFocus
                     margin="dense"
-                    label="Short Name"
+                    label="Bank Name"
                     type="text"
                     fullWidth
                     {...register("shortName", {
                                     required: { value: true, message: "Short name is required" },
-                                    maxLength: { value: 3, message: "Maximum 3 Length" },
-                                    pattern: { value: /^[0-9]+$/i, message: "Numbers Only" }
                                 })}
                     helperText={(errors.shortName) ? errors.shortName.message : ''}
                     variant="outlined"
@@ -227,7 +228,7 @@ function Bank() {
                     label="Account Number"
                     type="text"
                     fullWidth
-                    {...register("accountNumber", { required: { value: true, message: "Account number is required" } })}
+                    {...register("accountNumber", { required: { value: true, message: "Account number is required" }, pattern: { value: /^[0-9]+$/i, message: "Numbers Only" } })}
                     helperText={(errors.accountNumber) ? errors.accountNumber.message : ''}
                     variant="outlined"
                     />

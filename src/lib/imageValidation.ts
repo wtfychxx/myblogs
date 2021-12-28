@@ -1,18 +1,9 @@
 import Swal from 'sweetalert2'
 
-interface filesProps{
-    lastModififed: number,
-    name: string
-    size: number,
-    type: string
-}
-
-export const imageValidation = (files: filesProps) => {
+export const imageValidation = async (files: any) => {
     const filename = files.name
     const filesize = files.size
     const filetype = files.type
-
-    console.log(filesize)
 
     if(filetype !== 'image/png'){
         Swal.fire({
@@ -31,4 +22,15 @@ export const imageValidation = (files: filesProps) => {
     }
 
     return true
+
+    const results = await toBase64(files)
+
+    return results
 }
+
+const toBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = error => reject(error)
+})

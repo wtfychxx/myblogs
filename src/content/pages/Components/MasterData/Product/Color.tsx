@@ -157,19 +157,19 @@ function Color(){
         const isValid = imageValidation(e.target.files[0])
         const file = e.target.files[0]
     
-        if(isValid){
-          const formData = new FormData()
-          formData.append('file', file)
-    
-          const upload = await uploadImage(formData)
-    
-          if(upload.status === 'success'){
-            Swal.fire({
-              icon: 'success',
-              title: upload.message
-            })
-          }
+        const formData = new FormData()
+        formData.append('file', file)
+  
+        const upload = await uploadImage(formData)
+  
+        if(upload.status === 'success'){
+          Swal.fire({
+            icon: 'success',
+            title: upload.message
+          })
         }
+        // if(isValid){
+        // }
       }
 
     const AddButton = () => {
