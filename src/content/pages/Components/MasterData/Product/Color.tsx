@@ -4,9 +4,9 @@ import {
   Grid,
   Card,
   CardHeader,
+  CardMedia,
   CardContent,
   Divider,
-  FormControl,
   Typography,
   Paper
 } from "@material-ui/core"
@@ -20,7 +20,6 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
-import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControlLabel from'@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -51,8 +50,9 @@ function Color(){
     const [message, setMessage] = useState('')
     const [color, setColor] = useState([])
     const [product, setProduct] = useState([])
+    const [imageString, setImageString] = useState('')
     
-    const { register, handleSubmit, setValue, reset, control, formState: { errors } } = useForm<Inputs>()
+    const { register, handleSubmit, setValue, reset, control, getValues, formState: { errors } } = useForm<Inputs>()
 
     const getData = async () => {
         const result = await list('productColor')
@@ -70,7 +70,7 @@ function Color(){
     async function getColor(){
         const result = await list('colour')
 
-        if(result.data !== null && result.data.length){
+        if(result?.data !== null && result?.data.length){
             setColor(result.data)
         }
     }
@@ -78,14 +78,14 @@ function Color(){
     async function getProduct(){
         const result = await list('product')
 
-        if(result.data !== null && result.data.length){
+        if(result?.data !== null && result?.data.length){
             setProduct(result.data)
         }
     }
     useEffect(() => {
         getColor()
-        getData()
         getProduct()
+        getData()
     }, [])
 
     const handleClickOpen = async (id: number = 0) => {
@@ -153,23 +153,23 @@ function Color(){
         }
     }
 
-    const fileValidation = async (e:any) => {
-        const isValid = imageValidation(e.target.files[0])
-        const file = e.target.files[0]
-    
-        const formData = new FormData()
-        formData.append('file', file)
-  
-        const upload = await uploadImage(formData)
-  
-        if(upload.status === 'success'){
-          Swal.fire({
-            icon: 'success',
-            title: upload.message
-          })
+    const handleInputChange = (file) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+
+        reader.onload = (e: any) => {
+            setImageString(e.target.result)
         }
-        // if(isValid){
-        // }
+
+    }
+
+    const fileValidation = async (e:any) => {
+        const isValid = await imageValidation(e.target.files[0])
+        const file =  e.target.files[0]
+    
+        if(isValid){
+            handleInputChange(file)
+        }
       }
 
     const AddButton = () => {
@@ -316,6 +316,19 @@ function Color(){
                                     onChange={fileValidation}
                                     />
                             </Button>
+
+                            {
+                                (imageString !== '') ? <Card sx={{ mt: 2 }}>
+                                    <CardMedia
+                                        sx={{ height: 0, padding: 2 }}
+                                        component="img"
+                                        image={imageString}
+                                        title={`${getValues("colorId")}-image`}
+                                    >
+
+                                    </CardMedia>
+                                </Card> : null
+                            }
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={handleClose}>Cancel</Button>

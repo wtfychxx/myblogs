@@ -14,23 +14,19 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import Link from '@material-ui/core/Link'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogActions from '@material-ui/core/DialogActions'
 import TextField from '@material-ui/core/TextField'
 import Box from '@material-ui/core/Box'
-import Select from '@material-ui/core/Select'
-import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
-import { useTheme } from '@material-ui/core'
+import CardMedia from '@material-ui/core/CardMedia'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { imageValidation } from 'src/lib/imageValidation'
 import { detail, list, insert, deleteData, uploadImage } from 'src/api/masterData'
-import { Controller } from 'react-hook-form'
 import ReactHookFormSelect from 'src/components/ReactHookFormSelect'
-import { ImagesearchRoller, SettingsInputAntennaTwoTone } from '@material-ui/icons'
+import { useTheme } from '@material-ui/styles'
 
 type Inputs = {
   id: number,
@@ -137,6 +133,7 @@ function Brand() {
   }
 
   const handleClose = () => {
+    setImageString('')
     setOpen(false);
   }
 
@@ -161,8 +158,6 @@ function Brand() {
 
     if(isValid){
       handleInputChange(file)
-      // setImageString([...imageString, isValid])
-      // setValue("logoUrl", isValid)
     }
   }
 
@@ -227,59 +222,66 @@ function Brand() {
             component="form"
             sx={{ '& .MuiTextField-root': { mt: 2, width: 1, zIndex: '7 !important' } }}
             onSubmit={handleSubmit(onSubmit)}>
-            <DialogContent>
-              <input
-                type="hidden"
-                {...register("id")}
-              />
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Name"
-                type="Text"
-                fullWidth
-                variant="outlined"
-                {...register("name", { required: { value: true, message: "Name is required!" } })}
-                helperText={errors.name ? errors.name.message: ''}
-              />
-              
-              <ReactHookFormSelect
-                control={control}
-                name="categoryId"
-                id="categoryId"
-                label="Category"
-                defaultValue={''}
-                rules={{ required: { value: true, message: `Discuss is required!`} }}
-                >
-                  <MenuItem value={''}>- choose -</MenuItem>
-                  {((category !== undefined && category.length) ? category : []).map((entry, i) => {
-                    return(
-                      <MenuItem key={i} value={entry.id}>{entry.name}</MenuItem>
-                    )
-                  })}
-              </ReactHookFormSelect>
-              {errors.categoryId ? <Typography variant="subtitle1"> {errors.categoryId.message} </Typography>: ''}
-              
-              <Button
-                variant="contained"
-                component="label"
-                sx={{ mt: 2 }}>
-                  Upload Brand Logo
-                  <input
-                    type="file"
-                    hidden
-                    {...register("logoUrl")}
-                    onChange={fileValidation}
-                    />
-              </Button>
-
-              <img
-                src={imageString}
-                alt={`${getValues("name")}-image`}
-                loading="lazy"
-              />
-            </DialogContent>
+              <DialogContent>
+                <input
+                  type="hidden"
+                  {...register("id")}
+                />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Name"
+                  type="Text"
+                  fullWidth
+                  variant="outlined"
+                  {...register("name", { required: { value: true, message: "Name is required!" } })}
+                  helperText={errors.name ? errors.name.message: ''}
+                />
+                
+                <ReactHookFormSelect
+                  control={control}
+                  name="categoryId"
+                  id="categoryId"
+                  label="Category"
+                  defaultValue={''}
+                  rules={{ required: { value: true, message: `Discuss is required!`} }}
+                  >
+                    <MenuItem value={''}>- choose -</MenuItem>
+                    {((category !== undefined && category.length) ? category : []).map((entry, i) => {
+                      return(
+                        <MenuItem key={i} value={entry.id}>{entry.name}</MenuItem>
+                      )
+                    })}
+                </ReactHookFormSelect>
+                {errors.categoryId ? <Typography variant="subtitle1"> {errors.categoryId.message} </Typography>: ''}
+                
+                <Button
+                  variant="contained"
+                  component="label"
+                  sx={{ mt: 2 }}>
+                    Upload Brand Logo
+                    <input
+                      type="file"
+                      hidden
+                      {...register("logoUrl")}
+                      onChange={fileValidation}
+                      />
+                </Button>
+                    {
+                      (imageString !== '') ? <Card sx={{ mt: 2 }}>
+                        <CardMedia
+                          sx={{ 
+                              height: 0,
+                              padding: 2
+                          }}
+                          component="img"
+                          image={imageString}
+                          title={`${getValues("name")}-image`}>
+                        </CardMedia>
+                      </Card> : null
+                    }
+              </DialogContent>
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
               <Button variant="contained" type="submit">Save</Button>

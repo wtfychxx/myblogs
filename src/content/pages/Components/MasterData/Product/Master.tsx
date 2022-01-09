@@ -134,16 +134,16 @@ function Master() {
   async function getBrand(){
     const results = await list('brand')
 
-    if(results.data !== null && results.data.length){
-      setBrand(results.data)
+    if(results?.data !== null && results?.data.length){
+      setBrand(results?.data)
     }
   }
 
   async function getCity(){
     const results = await list('city')
 
-    if(results.data !== null && results.data.length){
-      setCity(results.data)
+    if(results?.data !== null && results?.data.length){
+      setCity(results?.data)
     }
   }
 

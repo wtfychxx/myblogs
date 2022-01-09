@@ -49,6 +49,7 @@ function City() {
   const [open, setOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [message, setMessage] = useState("");
+  const [province, setProvince] = useState([])
   const {
     register,
     handleSubmit,
@@ -69,6 +70,14 @@ function City() {
       }
     }
   };
+
+  const getProvince = async() => {
+    const results = await list('/province')
+
+    if(results?.data !== null && results?.data.length){
+      setProvince(results?.data)
+    }
+  }
 
   useEffect(() => {
     getData();
@@ -245,7 +254,11 @@ function City() {
                   })}
                 >
                   <MenuItem value={""}>- Choose -</MenuItem>
-                  <MenuItem value={1}>Test</MenuItem>
+                  {
+                    province.map((entry, i) => (
+                      <MenuItem key={i} value={entry.id}>{entry.name}</MenuItem>
+                    ))
+                  }
                 </Select>
               </FormControl>
             </DialogContent>

@@ -207,13 +207,18 @@ function Article() {
                             <Typography variant="h5" component="div" sx={{ color: theme.colors.primary.main }}>
                               {moment(entry.created).format('YYYY-MM-DD')}
                             </Typography>
-                            <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-                              {typeof entry.tags !== 'undefined' && entry.tags.split(',').map((key, i) => {
-                                return(
-                                  <Item key={i}>{key}</Item>
-                                )
-                              })}
-                            </Stack>
+                            <Grid
+                              container
+                              spacing={2}
+                              sx={{ mt: 1 }}>
+                                {typeof entry.tags !== 'undefined' && entry.tags.split(',').map((key, i) => {
+                                  return(
+                                    <Grid item lg={6} xs={12} key={i}>
+                                      <Item>{key}</Item>
+                                    </Grid>
+                                  )
+                                })}
+                            </Grid>
                           </CardContent>
                         </Card>
                       </Grid>
