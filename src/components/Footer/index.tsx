@@ -1,5 +1,6 @@
 import { Box, Container, Link, Typography } from '@material-ui/core';
 import { experimentalStyled } from '@material-ui/core/styles';
+import moment from 'moment'
 
 const FooterWrapper = experimentalStyled(Box)(
   ({ theme }) => `
@@ -9,6 +10,7 @@ const FooterWrapper = experimentalStyled(Box)(
 );
 
 function Footer() {
+  const currentYear = moment().format('YYYY')
   return (
     <FooterWrapper>
       <Container maxWidth="lg">
@@ -21,7 +23,7 @@ function Footer() {
         >
           <Box>
             <Typography variant="subtitle1">
-              &copy; 2021 - Otosales
+              &copy; {currentYear} - Fadhli Yulyanto
             </Typography>
           </Box>
           <Typography sx={{ pt: { xs: 2, md: 0 } }} variant="subtitle1">

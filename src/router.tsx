@@ -4,6 +4,7 @@ import { PartialRouteObject } from 'react-router';
 
 import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
+import HomeLayout from 'src/layouts/HomeLayout'
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
 
@@ -20,7 +21,9 @@ const Loader = (Component) => (props) => (
 const Login = Loader(lazy(() => import('src/content/pages/Components/Login')));
 const Register = Loader(lazy(() => import('src/content/pages/Components/Register')));
 
-const TransactionsUser = Loader(lazy(() => import('src/content/pages/Transaction')))
+const HomePage = Loader(lazy(() => import('src/content/pages/Home/Homepage')))
+const AboutPage = Loader(lazy(() => import('src/content/pages/Home/AboutPage')))
+const BlogsPage = Loader(lazy(() => import('src/content/pages/Home/BlogsPage')))
 
 // Dashboards
 
@@ -67,12 +70,35 @@ const TransactionDetail = Loader(lazy(() => import('src/content/pages/Components
 const routes: PartialRouteObject[] = [
   {
     path: '*',
-    element: <BaseLayout />,
+    element: <HomeLayout />,
     children: [
       {
         path: '/',
-        element: <TransactionsUser />
+        element: (
+          <Navigate
+            to="/home"
+            replace
+          />
+        )
       },
+      {
+        path: '/home',
+        element: <HomePage />
+      },
+      {
+        path: '/about',
+        element: <AboutPage />
+      },
+      {
+        path: '/blogs',
+        element: <BlogsPage />
+      },
+    ]
+  },
+  {
+    path: '*',
+    element: <BaseLayout />,
+    children: [
       {
         path: '/product/:id',
         element: <TransactionDetail isAdmin={false} />
