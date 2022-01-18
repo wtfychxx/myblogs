@@ -12,7 +12,8 @@ import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
 
 import Footer from 'src/components/Footer'
-import ProfileCover from './ProfileCover'
+import ProfileCover from '../AboutPage/ProfileCover'
+import EducationCover from '../AboutPage/EducationCover'
 
 function Homepage(){
     const [tableData, setTableData] = useState([])
@@ -139,6 +140,9 @@ function Homepage(){
             >
                 <Grid item xs={12}>
                     <ProfileCover />
+                </Grid>
+                <Grid item xs={12} mt={2}>
+                    <EducationCover />
                 </Grid>
             </Grid>
             <Footer />
