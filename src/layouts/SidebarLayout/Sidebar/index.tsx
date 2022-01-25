@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars-2'
 import { SidebarContext } from 'src/contexts/SidebarContext'
-import { Box, Drawer, Hidden } from '@material-ui/core'
+import { Box, Drawer, Hidden, Typography } from '@material-ui/core'
 import { experimentalStyled } from '@material-ui/core/styles'
 import SidebarMenu from './SidebarMenu'
 import SidebarLogo from 'src/components/OtosalesLogo/SidebarLogo'
@@ -44,7 +44,9 @@ function Sidebar() {
         <SidebarWrapper>
           <Scrollbars autoHide>
             <TopSection>
-              <SidebarLogo />
+              <Typography variant="h3" color="primary">
+                wtfychxx Blogs
+              </Typography>
             </TopSection>
             <SidebarMenu />
           </Scrollbars>
@@ -61,7 +63,9 @@ function Sidebar() {
           <SidebarWrapper>
             <Scrollbars autoHide>
               <TopSection>
-                <SidebarLogo />
+                <Typography variant="h2" color="primary">
+                  wtfychxx Blogs
+                </Typography>
               </TopSection>
               <SidebarMenu />
             </Scrollbars>

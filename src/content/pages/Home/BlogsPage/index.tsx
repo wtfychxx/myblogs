@@ -10,115 +10,25 @@ import Typography from '@material-ui/core/Typography'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Footer from 'src/components/Footer'
+import { getBlogs } from 'src/api/blogs'
 
 function BlogsPage(){
     const [tableData, setTableData] = useState([])
 
-    const sampleData = [
-        {
-            id: 1,
-            name: "Honda Jazz 2012",
-            basePrice: 60000000,
-            description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate quos adipisci neque tenetur, soluta maxime quidem, ratione earum consequatur quod reiciendis sit ducimus non quisquam ex. Nemo aut iure sapiente consequatur molestiae. Minima eaque quisquam a iure eum numquam porro?",
-            brandName: "Honda",
-            cityName: "Jakarta",
-            imageLink: "https://apollo-singapore.akamaized.net/v1/files/2i6yz3jtsl203-ID/image",
-            cashOnly: false,
-            discuss: [
-                {
-                    id: 1,
-                    userId: 1,
-                    userName: "Muhammad Faisal R",
-                    content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-                    created: "2021-12-01 13:07:52"
-                },
-                {
-                    id: 2,
-                    userId: 2,
-                    userName: "Febrianto Kabisatullah",
-                    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi itaque officia sapiente?",
-                    created: "2021-12-14 22:03:42"
-                },
-                {
-                    id: 3,
-                    userId: 3,
-                    userName: "Chaerul Anwar",
-                    content: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium dicta quam porro eius alias cupiditate, velit debitis!",
-                    created: "2021-12-15 12:00:22"
-                },
-            ],
-            review: [
-                {
-                    id: 1,
-                    userId: 17,
-                    userName: "Reza Andriansyah",
-                    rating: 3,
-                    content: "Lorem ipsum dolor sit."
-                },
-                {
-                    id: 17,
-                    userId: 43,
-                    userName: "Elang Pamungkas",
-                    rating: 4,
-                    content: "Lorem ipsum dolor sit."
-                },
-            ],
-
-        },
-        {
-            id: 2,
-            name: "Vario techno 150CC",
-            basePrice: 25000000,
-            description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi dicta nemo quis, architecto quod a veritatis et fugit sint esse!",
-            brandName: "Honda",
-            cityName: "Bekasi",
-            imageLink: "https://imgcdnblog.carbay.com/bikeBlog/wp-content/uploads/2017/06/08040935/vario150.jpg",
-            cashOnly: true,
-            discuss: [
-                {
-                    id: 1,
-                    userId: 1,
-                    userName: "Muhammad Faisal R",
-                    content: "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
-                    created: "2021-12-01 13:07:52"
-                },
-                {
-                    id: 2,
-                    userId: 2,
-                    userName: "Febrianto Kabisatullah",
-                    content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi itaque officia sapiente?",
-                    created: "2021-12-14 22:03:42"
-                }
-            ],
-            review: [
-                {
-                    id: 1,
-                    userId: 17,
-                    userName: "Reza Andriansyah",
-                    rating: 3,
-                    content: "Lorem ipsum dolor sit."
-                },
-                {
-                    id: 17,
-                    userId: 43,
-                    userName: "Elang Pamungkas",
-                    rating: 4,
-                    content: "Lorem ipsum dolor sit."
-                },
-                {
-                    id: 17,
-                    userId: 43,
-                    userName: "Elang Pamungkas",
-                    rating: 5,
-                    content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Amet assumenda dignissimos, aspernatur autem deserunt odit beatae vero placeat?"
-                },
-            ],
-
+    const getData = async () => {
+        const param = {
+            type: 'posts'
         }
-    ]
+
+        const data = await getBlogs()
+
+        if(data.results.length > 0){
+            setTableData(data.results)
+        }
+    }
 
     useEffect(() => {
-        setTableData(sampleData)
+        getData()
     }, [])
 
     return(
@@ -133,22 +43,25 @@ function BlogsPage(){
                     direction="row"
                     justifyContent="center"
                     alignItems="stretch"
+                    sx={{ p: 2 }}
                 >
                     <Grid item xs={12}>
                         <Grid container
                             spacing={3}>
-                            <Grid item xs={12} sx={{ textDecoration: 'none' }} component={RouterLink} to={`/article`}>
-                                <Card>
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            Test
-                                        </Typography>
-                                        <Typography>
-                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis veniam id tempora, temporibus hic tenetur iure cumque dignissimos animi fugiat!
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
+                            {tableData.map((entry, i) => (
+                                <Grid key={i} item xs={12} sx={{ textDecoration: 'none' }} component={RouterLink} to={`/article/${entry.id}`}>
+                                    <Card>
+                                        <CardContent>
+                                            <Typography gutterBottom variant="h5" component="div">
+                                                {entry.title}
+                                            </Typography>
+                                            <Typography>
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis veniam id tempora, temporibus hic tenetur iure cumque dignissimos animi fugiat!
+                                            </Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))}
                             
                         </Grid>
                     </Grid>

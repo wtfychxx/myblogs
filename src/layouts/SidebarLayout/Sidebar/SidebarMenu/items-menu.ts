@@ -27,80 +27,8 @@ const menuItems: MenuItems[] = [
         link: '/management/transactions',
         items: [
             {
-              name: 'Kategori',
-              link: '/management/masterdata/category'
-            },
-            {
-              name: 'Merk',
-              link: '/management/masterdata/brand'
-            },
-            {
-              name: 'Bank',
-              link: '/management/masterdata/bank'
-            },
-            {
-              name: 'Warna',
-              link: '/management/masterdata/color'
-            },
-            {
-              name: 'Area',
-              link: '/management/masterdata/area',
-              items: [
-                {
-                  name: 'Provinsi',
-                  link: '/management/masterdata/area/province'
-                },
-                {
-                  name: 'Kota',
-                  link: '/management/masterdata/area/city'
-                }
-              ]
-            },
-            {
-              name: 'Produk',
-              link: '/management/masterdata/product',
-              items: [
-                {
-                  name: 'Master Product',
-                  link: '/management/masterdata/product/masterProduct'
-                },
-                {
-                  name: 'Warna',
-                  link: '/management/masterdata/product/color'
-                },
-                {
-                  name: 'Tenor',
-                  link: '/management/masterdata/product/tenor'
-                },
-                {
-                  name: 'Tipe',
-                  link: '/management/masterdata/product/type'
-                },
-                {
-                  name: 'Spesifikasi',
-                  link: '/management/masterdata/product/spesification'
-                },
-                {
-                  name: 'Promo',
-                  link: '/management/masterdata/product/promo'
-                },
-                {
-                  name: 'Problem',
-                  link: '/management/masterdata/product/problem'
-                }
-              ]
-            },
-            {
-              name: 'Artikel',
-              link: '/management/masterdata/article'
-            },
-            {
-              name: 'Diskusi',
-              link: '/management/masterdata/discussion'
-            },
-            {
-              name: 'Review',
-              link: '/management/masterdata/review'
+              name: 'Post',
+              link: '/management/post'
             }
         ]
       },
@@ -111,19 +39,13 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Profile Details',
-            link: '/management/profile/details'
-          }
+            link: '/profile/details'
+          },
+          {
+            name: 'Change Password',
+            link: '/profile/changepassword'
+          },
         ]
-      }
-    ]
-  },
-  {
-    heading: 'Transaction',
-    items: [
-      {
-        name: 'Transaction',
-        icon: ShoppingCartIcon,
-        link: '/management/transactions'
       }
     ]
   }

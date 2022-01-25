@@ -1,20 +1,33 @@
 import axios from 'axios'
-import Swal from 'sweetalert2'
+import crypto from 'crypto'
+import { sha256Generator } from '../lib/encryptor'
+require('dotenv').config()
 
-const apiurl = 'http://103.8.79.68:8080'
+const apiurl = 'http://localhost:1234/api'
 
-export async function login(phone: string = ''){
+export async function login(email: string = '', password: string = ''){
     try{
-        const res = await axios.post(`${apiurl}/login`, JSON.stringify({
-            phone: phone
-        }))
+        const encryptedPassword = sha256Generator(password)
+        const res = await axios.post(`${apiurl}/authentication`, {
+            email: email,
+            password: encryptedPassword,
+            securityCode: sha256Generator(process.env.REACT_APP_API_KEY+email+encryptedPassword)
+        })
     
         return res.data
     }catch(errors){
-        return errors
+        return errors.response.data
     }
 }
 
-export async function logout(){
+export async function logout(data: any){
+    const config = {
+        headers: {
+            Authorization: data.session
+        }
+    }
 
+    const res: any = await axios.post(`/logout`, data, config)
+
+    return res.data
 }

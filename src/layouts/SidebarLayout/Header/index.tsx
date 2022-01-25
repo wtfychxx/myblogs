@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { Box, Hidden, IconButton, Tooltip } from '@material-ui/core';
+import { Box, Hidden, IconButton, Tooltip, Typography } from '@material-ui/core';
 import { experimentalStyled } from '@material-ui/core/styles';
 import MenuTwoToneIcon from '@material-ui/icons/MenuTwoTone';
 import { SidebarContext } from 'src/contexts/SidebarContext';
@@ -36,7 +36,9 @@ function Header() {
     <HeaderWrapper display="flex" alignItems="center">
       <Box display="flex" alignItems="center">
         <Hidden lgUp>
-          <HeaderLogo />
+          <Typography variant="h2" color="primary">
+            wtfychxx Blogs
+          </Typography>
         </Hidden>
       </Box>
       <Box display="flex" alignItems="center">
