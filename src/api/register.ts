@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-const apiurl = 'http://103.8.79.68:8080'
+const apiurl = process.env.REACT_APP_API_URL
 
 export async function registerData(endpoint: string, rawData: object){
     const res = await axios.

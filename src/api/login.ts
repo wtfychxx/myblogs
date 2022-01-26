@@ -3,7 +3,7 @@ import crypto from 'crypto'
 import { sha256Generator } from '../lib/encryptor'
 require('dotenv').config()
 
-const apiurl = 'http://localhost:1234/api'
+const apiurl = process.env.REACT_APP_API_URL
 
 export async function login(email: string = '', password: string = ''){
     try{
