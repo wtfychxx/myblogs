@@ -81,7 +81,7 @@ const Post = () => {
                                         <TableRow key={i}>
                                             <TableCell><Button component={RouterLink} to={`/management/postform/${entry.id}`}>{entry.title}</Button></TableCell>
                                             <TableCell>{entry.publishedDate}</TableCell>
-                                            <TableCell>hehe</TableCell>
+                                            <TableCell></TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>

@@ -1,10 +1,8 @@
 import { Helmet } from 'react-helmet-async'
 import { useEffect, useRef, useState } from 'react'
 import { Container, Grid, CssBaseline, ButtonBase } from '@material-ui/core'
-import { styled } from '@material-ui/core/styles'
 import { NavLink as RouterLink } from 'react-router-dom'
 
-import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 
 import Card from '@material-ui/core/Card'
@@ -55,8 +53,8 @@ function BlogsPage(){
                                             <Typography gutterBottom variant="h5" component="div">
                                                 {entry.title}
                                             </Typography>
-                                            <Typography>
-                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis veniam id tempora, temporibus hic tenetur iure cumque dignissimos animi fugiat!
+                                            <Typography variant="subtitle2">
+                                                {entry.publishedDate}
                                             </Typography>
                                         </CardContent>
                                     </Card>

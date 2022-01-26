@@ -4,8 +4,10 @@ export const imageValidation = async (files: any) => {
     const filename = files.name
     const filesize = files.size
     const filetype = files.type
+    
+    const allowedFileType = ['image/png', 'image/jpg', 'image/jpeg']
 
-    if(filetype !== 'image/png'){
+    if(allowedFileType.indexOf(filetype) === -1){
         Swal.fire({
             icon: 'warning',
             title: "Files must be type png!",

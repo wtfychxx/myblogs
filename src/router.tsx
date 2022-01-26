@@ -24,6 +24,7 @@ const Register = Loader(lazy(() => import('src/content/pages/Components/Register
 const HomePage = Loader(lazy(() => import('src/content/pages/Home/Homepage')))
 const AboutPage = Loader(lazy(() => import('src/content/pages/Home/AboutPage')))
 const BlogsPage = Loader(lazy(() => import('src/content/pages/Home/BlogsPage')))
+const BlogsDetail = Loader(lazy(() => import('src/content/pages/Home/BlogsDetail')))
 
 // Dashboards
 
@@ -68,6 +69,10 @@ const routes: PartialRouteObject[] = [
       {
         path: '/blogs',
         element: <BlogsPage />
+      },
+      {
+        path: '/article/:id',
+        element: <BlogsDetail />
       },
     ]
   },

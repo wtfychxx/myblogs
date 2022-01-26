@@ -12,3 +12,15 @@ export const getBlogs = async () => {
         return errors.response.data
     }
 }
+
+export const getBlogsDetail = async (id: string) => {
+    try{
+
+        const result = await axios.get(`${apiurl}/blogs/details/${id}`)
+
+        return result.data
+    }catch(errors){
+        console.error(errors)
+        return errors.response.data
+    }
+}
