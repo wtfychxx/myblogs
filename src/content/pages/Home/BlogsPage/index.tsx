@@ -36,34 +36,37 @@ function BlogsPage(){
             </Helmet>
 
             <Container maxWidth="xl">
-                <Grid
-                    container
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="stretch"
-                    sx={{ p: 2 }}
-                >
-                    <Grid item xs={12}>
-                        <Grid container
-                            spacing={3}>
-                            {tableData.map((entry, i) => (
-                                <Grid key={i} item xs={12} sx={{ textDecoration: 'none' }} component={RouterLink} to={`/article/${entry.id}`}>
-                                    <Card>
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {entry.title}
-                                            </Typography>
-                                            <Typography variant="subtitle2">
-                                                {entry.publishedDate}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
+                <Card sx={{ p: 2 }}>
+                    <CardContent>
+                        <Grid
+                            container
+                            direction="row"
+                            justifyContent="center"
+                            alignItems="stretch"
+                        >
+                            <Grid item xs={12}>
+                                <Grid container
+                                    spacing={3}>
+                                    {tableData.map((entry, i) => (
+                                        <Grid key={i} item xs={12} sx={{ textDecoration: 'none' }} component={RouterLink} to={`/article/${entry.id}`}>
+                                            <Card>
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h5" component="div">
+                                                        {entry.title}
+                                                    </Typography>
+                                                    <Typography variant="subtitle2">
+                                                        {entry.publishedDate}
+                                                    </Typography>
+                                                </CardContent>
+                                            </Card>
+                                        </Grid>
+                                    ))}
+                                    
                                 </Grid>
-                            ))}
-                            
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Grid>
+                    </CardContent>
+                </Card>
             </Container>
 
             <Footer />
