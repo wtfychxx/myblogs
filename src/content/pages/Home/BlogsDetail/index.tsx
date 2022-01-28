@@ -10,7 +10,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 
 import { useForm, SubmitHandler } from 'react-hook-form'
 
-import { getBlogsDetail } from 'src/api/blogs'
+import { getBlogsDetail, saveComments } from 'src/api/blogs'
 
 interface Data{
     title: string,
@@ -30,6 +30,7 @@ const BlogsDetail = () => {
         image: '',
         content: ''
     })
+    const [comments, setComments] = useState([])
 
     const generateRandomNumber = () => Math.floor(1000 + Math.random() * 9000)
 
@@ -40,14 +41,22 @@ const BlogsDetail = () => {
     })
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        console.log(data)
+        const result = await saveComments(data, id)
+
+        if(result.status === 'success'){
+            setComments(result.results)
+        }
     }
 
     async function getData(){
         const result = await getBlogsDetail(id)
 
-        if(result.results){
+        if(result.results.length){
             setData(result.results)
+        }
+
+        if(result.results.comments?.length){
+            setComments(result.results.comments)
         }
     }
 
@@ -103,7 +112,7 @@ const BlogsDetail = () => {
                                 <TextField
                                     margin="dense"
                                     type="text"
-                                    {...register("username")}
+                                    {...register("username", { required: { value: true, message: 'Please input your name!' } })}
                                     helperText={(errors.username) ? errors.username.message : ''}
                                 />
 
@@ -118,7 +127,7 @@ const BlogsDetail = () => {
                                     helperText={(errors.commentText) ? errors.commentText.message : ''}
                                 />
                     </CardContent>
-
+ 
                     <CardActions>
                         <Button
                             variant="contained"
