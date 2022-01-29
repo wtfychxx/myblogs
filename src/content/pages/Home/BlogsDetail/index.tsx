@@ -8,8 +8,13 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 
-import { useForm, SubmitHandler } from 'react-hook-form'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
+import moment from 'moment'
+
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { getBlogsDetail, saveComments } from 'src/api/blogs'
 
 interface Data{
@@ -51,7 +56,7 @@ const BlogsDetail = () => {
     async function getData(){
         const result = await getBlogsDetail(id)
 
-        if(result.results.length){
+        if(result.results){
             setData(result.results)
         }
 
@@ -64,7 +69,8 @@ const BlogsDetail = () => {
         getData()
     }, [])
 
-    return(<>
+    return(
+        <>
         <Helmet>
             <title>Blogs Detail | Blogs</title>
         </Helmet>
@@ -127,6 +133,36 @@ const BlogsDetail = () => {
                                     helperText={(errors.commentText) ? errors.commentText.message : ''}
                                 />
                     </CardContent>
+
+                    {(comments.length > 0) ?
+                        comments.map((entry, i) => (
+                            <List key={i} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                                <ListItem>
+                                    <ListItemText
+                                        primary={entry.username}
+                                        secondary={
+                                            <>
+                                                <Typography
+                                                    sx={{ display: 'inline' }}
+                                                    component="span"
+                                                    variant="body2"
+                                                >
+                                                    {entry.commentText}
+                                                </Typography>
+                                                <Divider />
+                                                <Typography
+                                                    sx={{ display: 'inline' }}
+                                                    variant="subtitle1"
+                                                >
+                                                    {moment(entry.createdDate).format('YYYY-MM-DD')}
+                                                </Typography>
+                                            </>
+                                        }
+                                    />
+                                </ListItem>
+                            </List>
+                        )) : null
+                    }
  
                     <CardActions>
                         <Button
