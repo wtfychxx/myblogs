@@ -39,7 +39,7 @@ const BlogsDetail = () => {
 
     const generateRandomNumber = () => Math.floor(1000 + Math.random() * 9000)
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>({
         defaultValues: {
             username: `Anonymous #${generateRandomNumber()}`
         }
@@ -50,6 +50,7 @@ const BlogsDetail = () => {
 
         if(result.status === 'success'){
             setComments(result.results)
+            setValue('username', `Anonymous #${generateRandomNumber()}`)
         }
     }
 
@@ -136,7 +137,7 @@ const BlogsDetail = () => {
 
                     {(comments.length > 0) ?
                         comments.map((entry, i) => (
-                            <List key={i} sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                            <List key={i} sx={{ width: '100%', bgcolor: 'background.paper' }}>
                                 <ListItem>
                                     <ListItemText
                                         primary={entry.username}

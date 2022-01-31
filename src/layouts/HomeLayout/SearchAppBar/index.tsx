@@ -11,6 +11,7 @@ import InputBase from '@material-ui/core/InputBase'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
+import Link from '@material-ui/core/Link'
 
 // import icon
 import IconButton from '@material-ui/core/IconButton'
@@ -118,7 +119,7 @@ export default function SearchAppBar() {
                             >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                    <Link component={RouterLink} to={`/${page.toLowerCase()}`}>{page}</Link>
                                 </MenuItem>
                             ))}
                         </Menu>

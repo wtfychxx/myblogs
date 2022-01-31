@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 import { styled } from '@material-ui/core/styles'
 
 
-import SearchAppBar from 'src/components/SearchAppBar'
+import SearchAppBar from './SearchAppBar'
 
 interface HomeLayoutProps{
     children?: ReactNode

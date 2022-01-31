@@ -41,7 +41,7 @@ function Homepage(){
                                 alignItems="center"
                                 color="#fff"
                             >
-                                <Typography variant="h1" pb={4}>
+                                <Typography variant="h1" pb={4} align="center">
                                     Welcome to Fadhli Yulyanto Blogs
                                 </Typography>
                                 <Button color="primary" variant='contained'>
