@@ -119,7 +119,7 @@ export default function SearchAppBar() {
                             >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Link component={RouterLink} to={`/${page.toLowerCase()}`}>{page}</Link>
+                                    <Link component={RouterLink} to={`/${page.toLowerCase()}`} sx={{ textDecoration: 'none' }}>{page}</Link>
                                 </MenuItem>
                             ))}
                         </Menu>

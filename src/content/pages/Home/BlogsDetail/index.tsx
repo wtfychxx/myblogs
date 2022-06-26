@@ -39,7 +39,7 @@ const BlogsDetail = () => {
 
     const generateRandomNumber = () => Math.floor(1000 + Math.random() * 9000)
 
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm<Inputs>({
+    const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<Inputs>({
         defaultValues: {
             username: `Anonymous #${generateRandomNumber()}`
         }
@@ -49,6 +49,7 @@ const BlogsDetail = () => {
         const result = await saveComments(data, id)
 
         if(result.status === 'success'){
+            reset()
             setComments(result.results)
             setValue('username', `Anonymous #${generateRandomNumber()}`)
         }

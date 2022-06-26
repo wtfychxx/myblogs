@@ -27,7 +27,7 @@ export async function logout(data: any){
         }
     }
 
-    const res: any = await axios.post(`/logout`, data, config)
+    const res: any = await axios.post(`${apiurl}/logout`, data, config)
 
     return res.data
 }

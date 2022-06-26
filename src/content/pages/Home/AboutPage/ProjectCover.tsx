@@ -63,6 +63,28 @@ const ProjectCover = () => {
 
                     </ListItemText>
                 </ListItem>
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar
+                            sx={{ 
+                                width: 38,
+                                height: 38,
+                                background: `${theme.colors.success.main}`,
+                                color: `${theme.palette.info.contrastText}`
+                             }}>
+                            BU
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primaryTypographyProps={{ 
+                            variant: 'h5',
+                            color: `${theme.colors.alpha.black[100]}`
+                        }}
+                        primary="Book-U Study-Hub"
+                    >
+
+                    </ListItemText>
+                </ListItem>
             </ListWrapper>
         </Card>
     )

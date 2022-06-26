@@ -23,6 +23,8 @@ import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@material-ui/icons/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@material-ui/icons/AccountTreeTwoTone';
 import { useNavigate } from 'react-router-dom';
+import { logout } from 'src/api/login'
+import { useCookies } from 'react-cookie';
 
 const UserBoxButton = experimentalStyled(Button)(
   ({ theme }) => `
@@ -61,6 +63,7 @@ const UserBoxDescription = experimentalStyled(Typography)(
 
 function HeaderUserbox() {
   const navigate = useNavigate()
+  const [cookie, setCookie, removeCookie] = useCookies(["user"])
   
   const user =
   {
@@ -79,6 +82,19 @@ function HeaderUserbox() {
   const handleClose = (): void => {
     setOpen(false);
   };
+
+  const handleLogout = async (e: any) => {
+    const param = {
+      session: cookie.user?.sessionID
+    }
+
+    const result = await logout(param)
+
+    if(result.status === 'success'){
+      removeCookie("user", { path: '/' })
+      navigate('/')
+    }
+  }
 
   return (
     <>
@@ -143,7 +159,7 @@ function HeaderUserbox() {
         </List>
         <Divider />
         <Box sx={{ m: 1 }}>
-          <Button color="primary" onClick={() => navigate('/')} fullWidth>
+          <Button color="primary" onClick={handleLogout} fullWidth>
             <LockOpenTwoToneIcon sx={{ mr: 1 }} />
             Sign out
           </Button>
