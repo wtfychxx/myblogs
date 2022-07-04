@@ -63,7 +63,7 @@ const ProjectCover = () => {
 
                     </ListItemText>
                 </ListItem>
-                <ListItem>
+                <ListItem button component="a" href="https://book.dynasis.web.id" target="_blank">
                     <ListItemAvatar>
                         <Avatar
                             sx={{ 
@@ -71,9 +71,8 @@ const ProjectCover = () => {
                                 height: 38,
                                 background: `${theme.colors.success.main}`,
                                 color: `${theme.palette.info.contrastText}`
-                             }}>
-                            BU
-                        </Avatar>
+                             }}
+                             src="/static/images/logo/book-u.png" />
                     </ListItemAvatar>
                     <ListItemText
                         primaryTypographyProps={{ 
